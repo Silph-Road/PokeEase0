@@ -139,7 +139,11 @@ $lure: #f52d60;
     background-color: $toggle-color;
     background-image: url("../images/settings.png");
 }
-
+#menu .item#snipes {
+    background-color: #440044;
+    background-image: url("../images/snipes.png");
+    background-size:cover;
+}
 #menu .close-button {
     width: 50px;
     height: 50px;
@@ -651,6 +655,24 @@ $event-incubator-status-color: #e9e1b5;
     background: white;
     cursor: pointer;
     transition: 0.3s;
+    .distance {
+        background-image:url('../images/distance.svg') ;
+        background-repeat:no-repeat;
+        background-position:35px;
+    }
+    .timer {
+        background-image:url('../images/clock.svg') ;
+        background-repeat:no-repeat;
+        background-position:35px;
+    }
+    .target{
+          background-image:url('../images/target.svg') ;
+           background-repeat:no-repeat;
+           width:32px;
+           height:32px;
+           background-size:cover;
+           display:inline-block;
+    }
 }
 
 .inner-wrap .pokemon.opened {

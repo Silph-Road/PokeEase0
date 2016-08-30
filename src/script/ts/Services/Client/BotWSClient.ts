@@ -274,7 +274,15 @@
             playerStats.Timestamp = timestamp;
             _.each(this.config.eventHandlers, eh => eh.onPlayerStats(playerStats));
         }
-        
+        else if (_.includes(type, ".HumanWalkSnipeEvent")) {
+            let snipeEv = message as IHumanWalkSnipeEvent;
+            if (snipeEv.Pokemons) {
+                const snipesList: IHumanWalkSnipeListEvent = {
+                    Pokemons: snipeEv.Pokemons.$values
+                }
+                _.each(this.config.eventHandlers, eh => eh.onHumanSnipeList(snipesList));
+            }
+        }
         //#endregion
 
         else {

@@ -31,6 +31,10 @@
     public setPokemonCount = (pokemonCount: number): void => {
         this.config.mainMenuElement.find("#pokemons .current").text(pokemonCount);
     }
+    
+    public setSnipePokemonCount = (pokemonCount: number): void => {
+        this.config.mainMenuElement.find("#snipes .current").text(pokemonCount);
+    }
 
     public setItemCount = (itemCount: number): void => {
         this.config.mainMenuElement.find("#items .current").text(itemCount);

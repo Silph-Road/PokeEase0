@@ -98,6 +98,11 @@ body {
   background-color: #2196f3;
   background-image: url("../images/settings.png"); }
 
+#menu .item#snipes {
+  background-color: #440044;
+  background-image: url("../images/snipes.png");
+  background-size: cover; }
+
 #menu .close-button {
   width: 50px;
   height: 50px;
@@ -572,6 +577,21 @@ body {
   background: white;
   cursor: pointer;
   transition: 0.3s; }
+  .inner-wrap .pokemon .distance {
+    background-image: url("../images/distance.svg");
+    background-repeat: no-repeat;
+    background-position: 35px; }
+  .inner-wrap .pokemon .timer {
+    background-image: url("../images/clock.svg");
+    background-repeat: no-repeat;
+    background-position: 35px; }
+  .inner-wrap .pokemon .target {
+    background-image: url("../images/target.svg");
+    background-repeat: no-repeat;
+    width: 32px;
+    height: 32px;
+    background-size: cover;
+    display: inline-block; }
 
 .inner-wrap .pokemon.opened {
   width: calc(100% - 30px); }

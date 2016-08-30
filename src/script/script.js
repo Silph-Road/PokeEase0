@@ -25,6 +25,9 @@ var MainMenuController = (function () {
         this.setPokemonCount = function (pokemonCount) {
             _this.config.mainMenuElement.find("#pokemons .current").text(pokemonCount);
         };
+        this.setSnipePokemonCount = function (pokemonCount) {
+            _this.config.mainMenuElement.find("#snipes .current").text(pokemonCount);
+        };
         this.setItemCount = function (itemCount) {
             _this.config.mainMenuElement.find("#items .current").text(itemCount);
         };
@@ -1278,6 +1281,45 @@ var SettingsMenuController = (function () {
     }
     return SettingsMenuController;
 }());
+var HumanSnipeMenuController = (function () {
+    function HumanSnipeMenuController(config) {
+        var _this = this;
+        this.updatePokemonListInner = function () {
+            if (!_this.pokemonList) {
+                return;
+            }
+            _this.config.snipeMenuElement.find(".pokemon").remove();
+            var pokemons = _this.getOrderedPokemons();
+            for (var i = 0; i < pokemons.length; i++) {
+                var pokemon = pokemons[i];
+                var pokemonName = _this.config.translationController.translation.pokemonNames[pokemon.Id];
+                var distance = Math.round(pokemon.Distance);
+                var expired = Math.round((new Date(pokemon.ExpiredTime).valueOf() - (new Date()).valueOf()) / 1000);
+                var estimate = Math.round(pokemon.EstimatedTime);
+                var html = "<div class=\"pokemon\" data-pokemon-unique-id=\"" + pokemon.Id + "\">\n                    <h1 class=\"name\">" + pokemonName + "</h1>\n                    <div class=\"image-container\">\n                        <img src=\"images/pokemon/" + pokemon.Id + ".png\"/>\n                    </div>\n                        <h3 class=\"distance\">" + distance + "m</h3>\n                        <h3 class=\"timer\">" + estimate + "/" + expired + "</h3>\n                        <a class=\"target\" data-uniqueId=" + pokemon.UniqueId + "></a>\n                </div>";
+                var pokemonElement = $(html);
+                pokemonElement.find('.target').click(function () {
+                    alert('test');
+                });
+                _this.config.snipeMenuElement.append(pokemonElement);
+            }
+        };
+        this.pokemonListRequested = function (request) {
+        };
+        this.updateSnipePokemonList = function (pokemonList) {
+            _this.pokemonList = pokemonList.Pokemons;
+            _this.updatePokemonListInner();
+        };
+        this.getOrderedPokemons = function () {
+            var pokemons;
+            return _this.pokemonList;
+        };
+        this.config = config;
+    }
+    HumanSnipeMenuController.prototype.onSetAsTarget = function (ev) {
+    };
+    return HumanSnipeMenuController;
+}());
 var DesktopNotificationController = (function () {
     function DesktopNotificationController(config) {
         var _this = this;
@@ -1950,6 +1992,11 @@ var InterfaceHandler = (function () {
     };
     InterfaceHandler.prototype.onSendEggsListRequest = function (request) {
         this.config.eggMenuController.eggListRequested(request);
+    };
+    InterfaceHandler.prototype.onHumanSnipeList = function (pokemonList) {
+        this.config.snipesMenuController.updateSnipePokemonList(pokemonList);
+        var currentSnipePokemonCount = pokemonList.Pokemons.length;
+        this.config.mainMenuController.setSnipePokemonCount(currentSnipePokemonCount);
     };
     InterfaceHandler.prototype.onSendInventoryListRequest = function (request) {
         this.config.inventoryMenuController.inventoryListRequested(request);
@@ -38247,6 +38294,19 @@ var FortType;
     FortType[FortType["Gym"] = 0] = "Gym";
     FortType[FortType["PokeStop"] = 1] = "PokeStop";
 })(FortType || (FortType = {}));
+var HumanWalkEventTypes;
+(function (HumanWalkEventTypes) {
+    HumanWalkEventTypes[HumanWalkEventTypes["StartWalking"] = 0] = "StartWalking";
+    HumanWalkEventTypes[HumanWalkEventTypes["DestinationReached"] = 1] = "DestinationReached";
+    HumanWalkEventTypes[HumanWalkEventTypes["PokemonScanned"] = 2] = "PokemonScanned";
+    HumanWalkEventTypes[HumanWalkEventTypes["AddedSnipePokemon"] = 3] = "AddedSnipePokemon";
+    HumanWalkEventTypes[HumanWalkEventTypes["PokestopUpdated"] = 4] = "PokestopUpdated";
+    HumanWalkEventTypes[HumanWalkEventTypes["NotEnoughtPalls"] = 5] = "NotEnoughtPalls";
+    HumanWalkEventTypes[HumanWalkEventTypes["TargetedPokemon"] = 6] = "TargetedPokemon";
+    HumanWalkEventTypes[HumanWalkEventTypes["ClientRequestUpdate"] = 7] = "ClientRequestUpdate";
+    HumanWalkEventTypes[HumanWalkEventTypes["EncounterSnipePokemon"] = 8] = "EncounterSnipePokemon";
+    HumanWalkEventTypes[HumanWalkEventTypes["QueueUpdated"] = 9] = "QueueUpdated";
+})(HumanWalkEventTypes || (HumanWalkEventTypes = {}));
 var PokeStopStatus;
 (function (PokeStopStatus) {
     PokeStopStatus[PokeStopStatus["Normal"] = 0] = "Normal";
@@ -38530,6 +38590,15 @@ var BotWSClient = (function () {
                 playerStats_1.PokemonCaughtByType = originalStats.PokemonCaughtByType.$values;
                 playerStats_1.Timestamp = timestamp;
                 _.each(_this.config.eventHandlers, function (eh) { return eh.onPlayerStats(playerStats_1); });
+            }
+            else if (_.includes(type, ".HumanWalkSnipeEvent")) {
+                var snipeEv = message;
+                if (snipeEv.Pokemons) {
+                    var snipesList_1 = {
+                        Pokemons: snipeEv.Pokemons.$values
+                    };
+                    _.each(_this.config.eventHandlers, function (eh) { return eh.onHumanSnipeList(snipesList_1); });
+                }
             }
             else {
                 _.each(_this.config.eventHandlers, function (eh) {
@@ -39273,6 +39342,11 @@ $(function () {
         eggMenuElement: $('body .content[data-category="eggs"]'),
         eggLoadingSpinner: $(".spinner-overlay")
     });
+    var snipesMenuController = new HumanSnipeMenuController({
+        translationController: translationController,
+        requestSender: client,
+        snipeMenuElement: $('body .content[data-category="snipes"]')
+    });
     var settingsMenuController = new SettingsMenuController({
         settingsMenuElement: $('body.live-version .content[data-category="settings"]'),
         settingsButtonsElement: $("#settings-buttons"),
@@ -39302,6 +39376,7 @@ $(function () {
         pokemonMenuController: pokemonMenuController,
         inventoryMenuController: inventoryMenuController,
         eggMenuController: eggMenuController,
+        snipesMenuController: snipesMenuController,
         profileInfoController: profileInfoController,
         requestSender: client,
         map: lMap,
