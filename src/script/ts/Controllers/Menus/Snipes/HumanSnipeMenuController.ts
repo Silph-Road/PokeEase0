@@ -28,7 +28,7 @@
             const expired =Math.round( (new Date(pokemon.ExpiredTime).valueOf() - (new Date()).valueOf()) / 1000);
             const estimate = Math.round(pokemon.EstimatedTime);
             const html =
-                `<div class="pokemon" data-pokemon-unique-id="${pokemon.Id}">
+                `<div class="pokemon" data-pokemon-unique-id="${pokemon.UniqueId}">
                     <h1 class="name">${pokemonName}</h1>
                     <div class="image-container">
                         <img src="images/pokemon/${pokemon.Id}.png"/>
@@ -38,16 +38,14 @@
                         <a class="target" data-uniqueId=${pokemon.UniqueId}></a>
                 </div>`;
             const pokemonElement = $(html);
-            pokemonElement.find('.target').click(()=> {
-                alert('test')
-            })
+            pokemonElement.find('.target').click(this.onSetAsTarget)
            // pokemonElement.click(this.pokemonClick);
             this.config.snipeMenuElement.append(pokemonElement);
         }
         //this.config.pokemonLoadingSpinner.fadeOut(150);
     }
-    private onSetAsTarget(ev:any)  {
-
+    private onSetAsTarget :any = (ev:any) =>{
+         alert($(ev).attr('data-uniqueId'))
     }
     /*
     private onOrderButtonClicked = (event: JQueryEventObject) => {

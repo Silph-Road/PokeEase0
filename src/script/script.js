@@ -1296,13 +1296,14 @@ var HumanSnipeMenuController = (function () {
                 var distance = Math.round(pokemon.Distance);
                 var expired = Math.round((new Date(pokemon.ExpiredTime).valueOf() - (new Date()).valueOf()) / 1000);
                 var estimate = Math.round(pokemon.EstimatedTime);
-                var html = "<div class=\"pokemon\" data-pokemon-unique-id=\"" + pokemon.Id + "\">\n                    <h1 class=\"name\">" + pokemonName + "</h1>\n                    <div class=\"image-container\">\n                        <img src=\"images/pokemon/" + pokemon.Id + ".png\"/>\n                    </div>\n                        <h3 class=\"distance\">" + distance + "m</h3>\n                        <h3 class=\"timer\">" + estimate + "/" + expired + "</h3>\n                        <a class=\"target\" data-uniqueId=" + pokemon.UniqueId + "></a>\n                </div>";
+                var html = "<div class=\"pokemon\" data-pokemon-unique-id=\"" + pokemon.UniqueId + "\">\n                    <h1 class=\"name\">" + pokemonName + "</h1>\n                    <div class=\"image-container\">\n                        <img src=\"images/pokemon/" + pokemon.Id + ".png\"/>\n                    </div>\n                        <h3 class=\"distance\">" + distance + "m</h3>\n                        <h3 class=\"timer\">" + estimate + "/" + expired + "</h3>\n                        <a class=\"target\" data-uniqueId=" + pokemon.UniqueId + "></a>\n                </div>";
                 var pokemonElement = $(html);
-                pokemonElement.find('.target').click(function () {
-                    alert('test');
-                });
+                pokemonElement.find('.target').click(_this.onSetAsTarget);
                 _this.config.snipeMenuElement.append(pokemonElement);
             }
+        };
+        this.onSetAsTarget = function (ev) {
+            alert($(ev).attr('data-uniqueId'));
         };
         this.pokemonListRequested = function (request) {
         };
@@ -1316,8 +1317,6 @@ var HumanSnipeMenuController = (function () {
         };
         this.config = config;
     }
-    HumanSnipeMenuController.prototype.onSetAsTarget = function (ev) {
-    };
     return HumanSnipeMenuController;
 }());
 var DesktopNotificationController = (function () {
