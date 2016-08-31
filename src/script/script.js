@@ -18,6 +18,9 @@ var MainMenuController = (function () {
             }
             _this.config.requestSender.sendEggsListRequest();
         };
+        this.onSnipeMenuClick = function (ev) {
+            _this.config.requestSender.sendHumanSnipPokemonListUpdateRequest();
+        };
         this.updateProfileData = function (profile) {
             _this.config.mainMenuElement.find("#pokemons .total").text(profile.PlayerData.MaxPokemonStorage);
             _this.config.mainMenuElement.find("#items .total").text(profile.PlayerData.MaxItemStorage);
@@ -38,6 +41,7 @@ var MainMenuController = (function () {
         this.config.mainMenuElement.find("#pokemons").click(this.onPokemonMenuClick);
         this.config.mainMenuElement.find("#items").click(this.onItemsMenuClick);
         this.config.mainMenuElement.find("#eggs").click(this.onEggsMenuClick);
+        this.config.mainMenuElement.find("#snipes").click(this.onSnipeMenuClick);
     }
     return MainMenuController;
 }());
@@ -1296,14 +1300,27 @@ var HumanSnipeMenuController = (function () {
                 var distance = Math.round(pokemon.Distance);
                 var expired = Math.round((new Date(pokemon.ExpiredTime).valueOf() - (new Date()).valueOf()) / 1000);
                 var estimate = Math.round(pokemon.EstimatedTime);
-                var html = "<div class=\"pokemon\" data-pokemon-unique-id=\"" + pokemon.UniqueId + "\">\n                    <h1 class=\"name\">" + pokemonName + "</h1>\n                    <div class=\"image-container\">\n                        <img src=\"images/pokemon/" + pokemon.Id + ".png\"/>\n                    </div>\n                        <h3 class=\"distance\">" + distance + "m</h3>\n                        <h3 class=\"timer\">" + estimate + "/" + expired + "</h3>\n                        <a class=\"target\" data-uniqueId=" + pokemon.UniqueId + "></a>\n                </div>";
+                var className = pokemon.Setting.Priority == 0 ? "targeted" : "";
+                if (pokemon.IsCatching) {
+                    var className_1 = "walking-to";
+                }
+                console.log("##############################################");
+                console.log(pokemon);
+                var html = "<div class=\"pokemon " + className + "\" data-pokemon-unique-id=\"" + pokemon.UniqueId + "\">\n                    <a class=\"delete \" data-uniqueId=\"" + pokemon.UniqueId + "\" title=\"Remove this Pokemon\"></a>\n                    <h1 class=\"name\">" + pokemonName + "</h1>\n                    <div class=\"image-container\">\n                        <img src=\"images/pokemon/" + pokemon.Id + ".png\" alt=\"" + pokemonName + "\" title=\"" + pokemonName + "\"/>\n                    </div>\n                    <h3 class=\"distance\">" + distance + "m</h3>\n                    <h3 class=\"timer\">" + estimate + "/" + expired + "</h3>\n                    <a class=\"snipe-him\" data-uniqueId=\"" + pokemon.UniqueId + "\" title=\"Snipe this Pokemon\"></a>\n                </div>";
                 var pokemonElement = $(html);
-                pokemonElement.find('.target').click(_this.onSetAsTarget);
+                pokemonElement.find('.snipe-him').click(_this.onSetAsTarget);
+                pokemonElement.find('.delete').click(_this.onRemoveSnipe);
                 _this.config.snipeMenuElement.append(pokemonElement);
             }
         };
         this.onSetAsTarget = function (ev) {
-            alert($(ev).attr('data-uniqueId'));
+            var uniqueId = $(ev.target).attr('data-uniqueId');
+            _this.config.requestSender.sendHumanSnipPokemonSnipeRequest(uniqueId);
+        };
+        this.onRemoveSnipe = function (ev) {
+            var uniqueId = $(ev.target).attr('data-uniqueId');
+            $(ev.target).closest('.pokemon').fadeOut(500);
+            _this.config.requestSender.sendHumanSnipPokemonRemoveRequest(uniqueId);
         };
         this.pokemonListRequested = function (request) {
         };
@@ -1999,6 +2016,14 @@ var InterfaceHandler = (function () {
     };
     InterfaceHandler.prototype.onSendInventoryListRequest = function (request) {
         this.config.inventoryMenuController.inventoryListRequested(request);
+    };
+    InterfaceHandler.prototype.onSendHumanSnipePokemonRequest = function (request) {
+    };
+    InterfaceHandler.prototype.onSendHumanSnipPokemonListUpdateRequest = function (request) {
+    };
+    InterfaceHandler.prototype.onSendHumanSnipePokemonRemoveRequest = function (request) {
+        var currentSnipePokemonCount = this.currentSnipePokemonCount - 1;
+        this.config.mainMenuController.setSnipePokemonCount(currentSnipePokemonCount);
     };
     InterfaceHandler.prototype.onSendPlayerStatsRequest = function (request) {
     };
@@ -38681,7 +38706,32 @@ var BotWSClient = (function () {
             var requestStr = JSON.stringify(request);
             _this.webSocket.send(requestStr);
         };
+        this.sendHumanSnipPokemonListUpdateRequest = function () {
+            var necroRequest = { Command: "PokemonSnipeList" };
+            _.each(_this.config.eventHandlers, function (eh) { return eh.onSendHumanSnipPokemonListUpdateRequest(necroRequest); });
+            if (_this.currentBotFamily === BotFamily.Undetermined || _this.currentBotFamily === BotFamily.Necro) {
+                _this.sendRequest(necroRequest);
+            }
+        };
         this.sendHumanSnipPokemonRemoveRequest = function (pokemonId) {
+            var request = {
+                Command: "RemovePokemon",
+                Data: pokemonId,
+                PokemonId: pokemonId,
+                Id: pokemonId
+            };
+            _.each(_this.config.eventHandlers, function (eh) { return eh.onSendHumanSnipePokemonRemoveRequest(request); });
+            _this.sendRequest(request);
+        };
+        this.sendHumanSnipPokemonSnipeRequest = function (pokemonId) {
+            var request = {
+                Command: "SnipePokemon",
+                Data: pokemonId,
+                PokemonId: pokemonId,
+                Id: pokemonId
+            };
+            _.each(_this.config.eventHandlers, function (eh) { return eh.onSendHumanSnipePokemonRequest(request); });
+            _this.sendRequest(request);
         };
         this.parseItemString = function (itemStr) {
             var itemParseRegex = /(\d+) x (.+?)(?:,|$)/g;

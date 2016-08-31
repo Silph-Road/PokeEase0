@@ -6,6 +6,7 @@
         this.config.mainMenuElement.find("#pokemons").click(this.onPokemonMenuClick);
         this.config.mainMenuElement.find("#items").click(this.onItemsMenuClick);
         this.config.mainMenuElement.find("#eggs").click(this.onEggsMenuClick);
+        this.config.mainMenuElement.find("#snipes").click(this.onSnipeMenuClick);
     }
 
     private onPokemonMenuClick = (ev: JQueryEventObject): void => {
@@ -21,6 +22,10 @@
             this.config.requestSender.sendPlayerStatsRequest();
         }
         this.config.requestSender.sendEggsListRequest();
+    }
+
+     private onSnipeMenuClick = (ev: JQueryEventObject): void => {
+        this.config.requestSender.sendHumanSnipPokemonListUpdateRequest();
     }
 
     public updateProfileData = (profile: IProfileEvent): void => {
