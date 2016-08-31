@@ -27,10 +27,9 @@
             const distance  = Math.round(pokemon.Distance)
             const expired =Math.round( (new Date(pokemon.ExpiredTime).valueOf() - (new Date()).valueOf()) / 1000);
             const estimate = Math.round(pokemon.EstimatedTime);
-            const className = pokemon.Setting.Priority == 0?"targeted": "";
-            if(pokemon.IsCatching) {  let className ="walking-to" }
-console.log("##############################################")            
-console.log(pokemon)
+            const className = pokemon.IsCatching?"walking-to": (pokemon.Setting.Priority == 0?"targeted": "");
+            const loading = pokemon.IsCatching?`<div id="fountainTextG"><div id="fountainTextG_1" class="fountainTextG">W</div><div id="fountainTextG_2" class="fountainTextG">a</div><div id="fountainTextG_3" class="fountainTextG">l</div><div id="fountainTextG_4" class="fountainTextG">k</div><div id="fountainTextG_5" class="fountainTextG">i</div><div id="fountainTextG_6" class="fountainTextG">n</div><div id="fountainTextG_7" class="fountainTextG">g</div></div> `: "";
+
             const html =
                 `<div class="pokemon ${className}" data-pokemon-unique-id="${pokemon.UniqueId}">
                     <a class="delete " data-uniqueId="${pokemon.UniqueId}" title="Remove this Pokemon"></a>
@@ -38,6 +37,7 @@ console.log(pokemon)
                     <div class="image-container">
                         <img src="images/pokemon/${pokemon.Id}.png" alt="${pokemonName}" title="${pokemonName}"/>
                     </div>
+                     ${loading}
                     <h3 class="distance">${distance}m</h3>
                     <h3 class="timer">${estimate}/${expired}</h3>
                     <a class="snipe-him" data-uniqueId="${pokemon.UniqueId}" title="Snipe this Pokemon"></a>

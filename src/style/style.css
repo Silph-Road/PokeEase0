@@ -617,6 +617,10 @@ body {
       display: none !important; }
     .inner-wrap .pokemon.walking-to .delete {
       display: none !important; }
+    .inner-wrap .pokemon.walking-to .distance {
+      display: none; }
+    .inner-wrap .pokemon.walking-to .animation-walking {
+      display: block !important; }
   .inner-wrap .pokemon:hover .snipe-him {
     display: inline-block;
     transition-duration: 1s; }
