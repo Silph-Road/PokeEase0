@@ -235,7 +235,16 @@
     public onSendInventoryListRequest(request: IRequest): void {
         this.config.inventoryMenuController.inventoryListRequested(request);
     }
-
+     public onSendHumanSnipePokemonRequest(request: IRequest): void {
+        //this.config.inventoryMenuController.inventoryListRequested(request);
+    }
+    public onSendHumanSnipPokemonListUpdateRequest(request:IRequest) : void {
+    
+    }
+    public onSendHumanSnipePokemonRemoveRequest(request:IRequest) : void {
+        let currentSnipePokemonCount = this.currentSnipePokemonCount -1;
+        this.config.mainMenuController.setSnipePokemonCount(currentSnipePokemonCount);
+    }
     public onSendPlayerStatsRequest(request: IRequest): void {
         
     }

@@ -27,25 +27,37 @@
             const distance  = Math.round(pokemon.Distance)
             const expired =Math.round( (new Date(pokemon.ExpiredTime).valueOf() - (new Date()).valueOf()) / 1000);
             const estimate = Math.round(pokemon.EstimatedTime);
+            const className = pokemon.Setting.Priority == 0?"targeted": "";
+            if(pokemon.IsCatching) {  let className ="walking-to" }
+console.log("##############################################")            
+console.log(pokemon)
             const html =
-                `<div class="pokemon" data-pokemon-unique-id="${pokemon.UniqueId}">
+                `<div class="pokemon ${className}" data-pokemon-unique-id="${pokemon.UniqueId}">
+                    <a class="delete " data-uniqueId="${pokemon.UniqueId}" title="Remove this Pokemon"></a>
                     <h1 class="name">${pokemonName}</h1>
                     <div class="image-container">
-                        <img src="images/pokemon/${pokemon.Id}.png"/>
+                        <img src="images/pokemon/${pokemon.Id}.png" alt="${pokemonName}" title="${pokemonName}"/>
                     </div>
-                        <h3 class="distance">${distance}m</h3>
-                        <h3 class="timer">${estimate}/${expired}</h3>
-                        <a class="target" data-uniqueId=${pokemon.UniqueId}></a>
+                    <h3 class="distance">${distance}m</h3>
+                    <h3 class="timer">${estimate}/${expired}</h3>
+                    <a class="snipe-him" data-uniqueId="${pokemon.UniqueId}" title="Snipe this Pokemon"></a>
                 </div>`;
             const pokemonElement = $(html);
-            pokemonElement.find('.target').click(this.onSetAsTarget)
-           // pokemonElement.click(this.pokemonClick);
+            pokemonElement.find('.snipe-him').click(this.onSetAsTarget)
+            pokemonElement.find('.delete').click(this.onRemoveSnipe)
+
             this.config.snipeMenuElement.append(pokemonElement);
         }
         //this.config.pokemonLoadingSpinner.fadeOut(150);
     }
     private onSetAsTarget :any = (ev:any) =>{
-         alert($(ev).attr('data-uniqueId'))
+         const uniqueId = $(ev.target).attr('data-uniqueId');
+         this.config.requestSender.sendHumanSnipPokemonSnipeRequest(uniqueId);
+    }
+     private onRemoveSnipe :any = (ev:any) =>{
+         const uniqueId = $(ev.target).attr('data-uniqueId');
+         $(ev.target).closest('.pokemon').fadeOut(500)
+         this.config.requestSender.sendHumanSnipPokemonRemoveRequest(uniqueId);
     }
     /*
     private onOrderButtonClicked = (event: JQueryEventObject) => {

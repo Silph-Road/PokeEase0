@@ -358,7 +358,7 @@
         const request: IRequest = {
              Command: "TransferPokemon",
              Data: pokemonId,
-             PokemonId: pokemonId
+             PokemonId: pokemonId 
         };
         _.each(this.config.eventHandlers, eh => eh.onSendTransferPokemonRequest(request));
         this.sendRequest(request);
@@ -379,10 +379,35 @@
         const requestStr = JSON.stringify(request);
         this.webSocket.send(requestStr);
     }
-
-    public sendHumanSnipPokemonRemoveRequest =(pokemonId: string): void => {
-        
+    public sendHumanSnipPokemonListUpdateRequest = ():void => {
+        const necroRequest: IRequest = { Command: "PokemonSnipeList" };
+        _.each(this.config.eventHandlers, eh => eh.onSendHumanSnipPokemonListUpdateRequest(necroRequest));
+       
+        if (this.currentBotFamily === BotFamily.Undetermined || this.currentBotFamily === BotFamily.Necro) {
+            this.sendRequest(necroRequest);
+        }
     }
+    public sendHumanSnipPokemonRemoveRequest =(pokemonId: string): void => {
+        const request: IRequest = {
+             Command: "RemovePokemon",
+             Data: pokemonId,
+             PokemonId: pokemonId,
+             Id:pokemonId
+        };
+        _.each(this.config.eventHandlers, eh => eh.onSendHumanSnipePokemonRemoveRequest(request));
+        this.sendRequest(request);
+    }
+     public sendHumanSnipPokemonSnipeRequest =(pokemonId: string): void => {
+        const request: IRequest = {
+             Command: "SnipePokemon",
+             Data: pokemonId,
+             PokemonId: pokemonId ,
+             Id:pokemonId
+        };
+        _.each(this.config.eventHandlers, eh => eh.onSendHumanSnipePokemonRequest(request));
+        this.sendRequest(request);
+    }
+
     private parseItemString = (itemStr: string): IFortItem[] => {
         const itemParseRegex = /(\d+) x (.+?)(?:,|$)/g;
         const itemsList: IFortItem[] = [];

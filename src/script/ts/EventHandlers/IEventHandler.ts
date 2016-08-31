@@ -31,5 +31,8 @@ interface IEventHandler {
     onSendGetPokemonSettingsRequest: (request: IRequest) => void;
     onSendTransferPokemonRequest: (request: IRequest) => void;
     onSendEvolvePokemonRequest: (request: IRequest) => void;
+    onSendHumanSnipePokemonRequest: (request: IRequest) => void;
+    onSendHumanSnipPokemonListUpdateRequest: (request:IRequest) => void;
+    onSendHumanSnipePokemonRemoveRequest : (request:IRequest) => void;
     onUnknownEvent?: (message: any) => void;
 }
