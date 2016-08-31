@@ -38827,7 +38827,7 @@ var DefaultSettings = (function () {
                 mapProvider: MapProvider.GMaps,
                 mapFolllowPlayer: true,
                 mapClearing: 0,
-                mapGoogleApiKey: "",
+                mapGoogleApiKey: "AIzaSyBjrq_CCDjmgNLJZnLBrMRgIxTJrgW_LaY",
                 mapOsmApiKey: "",
                 clientAddress: "127.0.0.1",
                 clientPort: 14252,
