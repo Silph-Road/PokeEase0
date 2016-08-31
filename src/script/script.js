@@ -38681,6 +38681,8 @@ var BotWSClient = (function () {
             var requestStr = JSON.stringify(request);
             _this.webSocket.send(requestStr);
         };
+        this.sendHumanSnipPokemonRemoveRequest = function (pokemonId) {
+        };
         this.parseItemString = function (itemStr) {
             var itemParseRegex = /(\d+) x (.+?)(?:,|$)/g;
             var itemsList = [];

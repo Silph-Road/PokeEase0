@@ -380,6 +380,9 @@
         this.webSocket.send(requestStr);
     }
 
+    public sendHumanSnipPokemonRemoveRequest =(pokemonId: string): void => {
+        
+    }
     private parseItemString = (itemStr: string): IFortItem[] => {
         const itemParseRegex = /(\d+) x (.+?)(?:,|$)/g;
         const itemsList: IFortItem[] = [];
