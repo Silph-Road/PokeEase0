@@ -533,12 +533,14 @@ class GoogleMap implements IMap {
 
     public onPokemonCapture(pokemonCapture: IPokemonCaptureEvent): void {
         console.log(pokemonCapture);
-
+        let name = this.config.translationController.translation.pokemonNames[pokemonCapture.PokemonId]
         const captureMarker = new CaptureMarker (
             new google.maps.LatLng(pokemonCapture.Latitude, pokemonCapture.Longitude),
             this.map,
+            pokemonCapture ,
             {
-                PokemonId: pokemonCapture.Id
+                PokemonId: pokemonCapture.Id,
+                Name:name
             }
         );
         this.capMarkers.push(captureMarker);

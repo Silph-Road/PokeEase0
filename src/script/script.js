@@ -3,6 +3,11 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
+var app = (function () {
+    function app() {
+    }
+    return app;
+}());
 var MainMenuController = (function () {
     function MainMenuController(config) {
         var _this = this;
@@ -47,11 +52,13 @@ var MainMenuController = (function () {
 }());
 var CaptureMarker = (function (_super) {
     __extends(CaptureMarker, _super);
-    function CaptureMarker(latlng, map, args) {
+    function CaptureMarker(latlng, map, sender, args) {
         _super.call(this);
         this.latlng = latlng;
         this.args = args;
         this.setMap(map);
+        this.map = map;
+        this.current = sender;
     }
     CaptureMarker.prototype.draw = function () {
         var div = this.div;
@@ -79,7 +86,24 @@ var CaptureMarker = (function (_super) {
             });
             d.append(i);
             var panes = this.getPanes();
-            panes.overlayLayer.appendChild(div);
+            panes.overlayMouseTarget.appendChild(div);
+            var me = this;
+            var map_1 = this.map;
+            var pokemonName = this.args.Name;
+            var popupData_1 = {
+                Name: this.args.Name,
+                PokemonId: this.current.PokemonId,
+                Latitude: this.current.Latitude,
+                Longitude: this.current.Longitude
+            };
+            google.maps.event.addDomListener(div, "click", function (event) {
+                var infowindow = new google.maps.InfoWindow({
+                    content: app.templates.PokemonInfoPopup(popupData_1)
+                });
+                infowindow.open(map_1, me);
+                event.stopPropagation();
+                google.maps.event.trigger(self, "click");
+            });
         }
         var point = this.getProjection().fromLatLngToDivPixel(this.latlng);
         if (point) {
@@ -683,8 +707,10 @@ var GoogleMap = (function () {
     };
     GoogleMap.prototype.onPokemonCapture = function (pokemonCapture) {
         console.log(pokemonCapture);
-        var captureMarker = new CaptureMarker(new google.maps.LatLng(pokemonCapture.Latitude, pokemonCapture.Longitude), this.map, {
-            PokemonId: pokemonCapture.Id
+        var name = this.config.translationController.translation.pokemonNames[pokemonCapture.PokemonId];
+        var captureMarker = new CaptureMarker(new google.maps.LatLng(pokemonCapture.Latitude, pokemonCapture.Longitude), this.map, pokemonCapture, {
+            PokemonId: pokemonCapture.Id,
+            Name: name
         });
         this.capMarkers.push(captureMarker);
     };
@@ -873,7 +899,8 @@ var LeafletMap = (function () {
                     iconUrl: imgUrl,
                     iconSize: [width, height]
                 })
-            });
+            }).bindPopup("hahaha. I am pokemon");
+            marker.bindPopup('aaaaaaaaaaa');
             _this.map.addLayer(marker);
             pokemonCapture.LMarker = marker;
             _this.pokemons.push(pokemonCapture);

@@ -149,7 +149,8 @@
                         iconUrl: imgUrl,
                         iconSize: [width, height]
                     })
-                });
+                }).bindPopup("hahaha. I am pokemon");
+                marker.bindPopup('aaaaaaaaaaa')
             this.map.addLayer(marker);
             pokemonCapture.LMarker = marker;
             this.pokemons.push(pokemonCapture);

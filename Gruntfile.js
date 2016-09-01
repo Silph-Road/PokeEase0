@@ -4,7 +4,7 @@ module.exports = function (grunt) {
 
         ts: {
             default: {
-                src: ["src/script/ts/**/*.ts", "!node_modules/**"],
+                src: ["src/script/**/**/*.ts", "!node_modules/**"],
                 dest: "src/script/script.js"
             }
         },
@@ -24,21 +24,51 @@ module.exports = function (grunt) {
                 files: ['**/*.scss'],
                 tasks: ['sass'],
                 options: {
-                spawn: false,
+                    spawn: false,
                 },
             },
             ts: {
-                 files: ['**/*.ts','**/**/*.ts','**/**/**/*.ts','**/**/**/**/*.ts'],
-                    tasks: ['ts'],
-                    options: {
+                files: ['**/*.ts', '**/**/*.ts', '**/**/**/*.ts', '**/**/**/**/*.ts'],
+                tasks: ['ts'],
+                options: {
+                    spawn: false,
+                },
+            },
+            handlebars: {
+                files: ['src/script/**/*.hbs'],
+                tasks: ['handlebars'],
+                options: {
                     spawn: false,
                 },
             }
         },
+        handlebars: {
+            compile: {
+                options: {
+                    namespace: function (filename) {
+                        //var s  = filename.substring(filename.lastIndexOf('/'), )
+
+                        //var names = filename.replace(/src\/script\/templates\/(.*)\.hbs/, '$1');
+                        //return names.split('/').join('.');
+                        return "app.templates";
+                    },
+                    processName: function (filename) {  // input: templates/_header.hbs
+                        console.log(filename);
+                        return filename.replace(/src\/script\/templates\/(.*)\.hbs/, '$1')
+                        //var pieces = filePath.split('/');
+                       // return pieces[pieces.length - 1];       // output: _header.hbs
+                    }
+                },
+                files: {
+                    'src/script/template.js': ['src/script/**/*.hbs']
+                }
+            }
+        }
     });
 
+    grunt.loadNpmTasks('grunt-contrib-handlebars');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-ts');
     grunt.loadNpmTasks('grunt-sass');
-    grunt.registerTask('default', ['ts', 'sass','watch']);
+    grunt.registerTask('default', ['ts', 'sass','handlebars', 'watch']);
 };
