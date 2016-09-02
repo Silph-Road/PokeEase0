@@ -1,42 +1,33 @@
-﻿<div class="iw-wrap iw-pokestop">
-    <div class="iw-status">{{Name}}</div>
+﻿<div class="iw-wrap iw-pokemon iw-{{Rarity}}">
+    <div class="iw-status">#{{PokemonId}} - {{friendlyRarityName Rarity}} </div>
     <img src="images/pokemon/{{PokemonId}}.png" alt="{{Name}} icon" class="iw-icon">
     <div class="iw-header iw-name">
-        <span class="iw-detail-value">{{Time}}</span>
-        <span class="iw-detail-header">{{Tyep}}</span>
+        <span class="iw-detail-value">{{Name}}</span>
+        <span class="iw-detail-header">{{CatchType}}</span>
     </div>
     <div class="iw-content">
-        <div class="iw-detail iw-gym-level" >
+        <div class="iw-detail" >
             <span class="iw-detail-header">Level</span>
             <span class="iw-detail-value">{{Level}}</span>
         </div>
-        <div class="iw-detail iw-gym-xp" style="display: none">
-            <span class="iw-detail-header">XP</span>
-            <span class="iw-detail-value">8994 / 10000</span>
+        <div class="iw-detail" >
+            <span class="iw-detail-header">IV</span>
+            <span class="iw-detail-value">{{Perfection}}%</span>
         </div>
 
-        <hr class="iw-gym-hr-general" style="display: none">
-
-        <div class="iw-detail iw-gym-defender" style="display: none">
-            <span class="iw-detail-header">Defender</span>
-            <span class="iw-detail-value">
-                <img alt="Defender pokemon" src="#" class="iw-gym-defender-icon">
-                <span class="iw-gym-defender-name"></span>
-            </span>
-        </div>
-        <div class="iw-detail iw-gym-defender-cp">
+        <div class="iw-detail">
             <span class="iw-detail-header">CP</span>
-            <span class="iw-detail-value">{{CP}}</span>
+            <span class="iw-detail-value">{{Cp}}/{{MaxCp}}</span>
         </div>
         <hr class="iw-gym-hr-defender" style="display: none">
 
         <div class="iw-detail iw-latitude">
             <span class="iw-detail-header">Latitude</span>
-            <span class="iw-detail-value">{{Latitude}}</span>
+            <span class="iw-detail-value">{{roundCoord Latitude}}</span>
         </div>
         <div class="iw-detail iw-longitude">
             <span class="iw-detail-header">Longitude</span>
-            <span class="iw-detail-value">{{Longitude}}</span>
+            <span class="iw-detail-value">{{roundCoord Longitude}}</span>
         </div>
     </div>
 </div>

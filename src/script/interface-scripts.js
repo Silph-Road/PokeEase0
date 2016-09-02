@@ -305,7 +305,6 @@ function sendNotification(text, bgColor, textColor, delay, description) {
 }
 
 function setIwStyles() {
-
     var gmIW;
     var counterIW = 0;
     var iwOuter = $(".gm-style-iw");

@@ -55,18 +55,15 @@
             var me = this;
             let map = this.map;
             let pokemonName = this.args.Name;
-            let popupData :IPokemonInfoPopupData = {
-                Name :   this.args.Name as string,
-                PokemonId : this.current.PokemonId ,
-                Latitude: this.current.Latitude,
-                Longitude:this.current.Longitude
-            };
-
+            let popupData :IPokemonInfoPopupData = this.current;
+            popupData.Name = pokemonName;
+            popupData.PokemonId = this.args.PokemonId;
             google.maps.event.addDomListener(div, "click", function(event) {
 			    var infowindow = new google.maps.InfoWindow({
                   content:  app.templates.PokemonInfoPopup(popupData)
                 });
                  infowindow.open(map, me);
+                 window.setIwStyles();
                  event.stopPropagation();
 			    google.maps.event.trigger(self, "click");
 		    });

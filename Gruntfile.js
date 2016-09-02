@@ -14,17 +14,17 @@ module.exports = function(grunt) {
 
         sass: {
             options: {
-                sourceMap: true
+                sourceMap: false
             },
             dist: {
                 files: {
-                    'src/style/style.css': 'src/style/style.scss'
+                    'src/style/style.css': 'src/style/scss/style.scss'
                 }
             }
         },
         watch: {
             sass: {
-                files: ['**/*.scss'],
+                files: ['**/*.scss','**/**/*.scss'],
                 tasks: ['sass'],
                 options: {
                     spawn: false,
@@ -142,7 +142,7 @@ module.exports = function(grunt) {
         concat: {
             generated: {
                 files: [{
-                        dest: '.tmp/script/vendor.js',
+                        dest: '.tmp/script/app.js',
                         src: ['src/script/*.js']
                     },
                     {
@@ -208,7 +208,7 @@ module.exports = function(grunt) {
         'useminPrepare',
         'concat:generated',
         'cssmin:generated',
-        'uglify:generated',
+        //'uglify:generated',
        // 'filerev',
         'usemin'
     ]);

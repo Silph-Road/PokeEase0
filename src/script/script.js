@@ -3,11 +3,6 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var app = (function () {
-    function app() {
-    }
-    return app;
-}());
 var MainMenuController = (function () {
     function MainMenuController(config) {
         var _this = this;
@@ -90,17 +85,15 @@ var CaptureMarker = (function (_super) {
             var me = this;
             var map_1 = this.map;
             var pokemonName = this.args.Name;
-            var popupData_1 = {
-                Name: this.args.Name,
-                PokemonId: this.current.PokemonId,
-                Latitude: this.current.Latitude,
-                Longitude: this.current.Longitude
-            };
+            var popupData_1 = this.current;
+            popupData_1.Name = pokemonName;
+            popupData_1.PokemonId = this.args.PokemonId;
             google.maps.event.addDomListener(div, "click", function (event) {
                 var infowindow = new google.maps.InfoWindow({
                     content: app.templates.PokemonInfoPopup(popupData_1)
                 });
                 infowindow.open(map_1, me);
+                window.setIwStyles();
                 event.stopPropagation();
                 google.maps.event.trigger(self, "click");
             });
@@ -707,7 +700,7 @@ var GoogleMap = (function () {
     };
     GoogleMap.prototype.onPokemonCapture = function (pokemonCapture) {
         console.log(pokemonCapture);
-        var name = this.config.translationController.translation.pokemonNames[pokemonCapture.PokemonId];
+        var name = this.config.translationController.translation.pokemonNames[pokemonCapture.Id];
         var captureMarker = new CaptureMarker(new google.maps.LatLng(pokemonCapture.Latitude, pokemonCapture.Longitude), this.map, pokemonCapture, {
             PokemonId: pokemonCapture.Id,
             Name: name
@@ -1328,8 +1321,17 @@ var HumanSnipeMenuController = (function () {
                 var expired = Math.round((new Date(pokemon.ExpiredTime).valueOf() - (new Date()).valueOf()) / 1000);
                 var estimate = Math.round(pokemon.EstimatedTime);
                 var className = pokemon.IsCatching ? "walking-to" : (pokemon.Setting.Priority == 0 ? "targeted" : "");
-                var loading = pokemon.IsCatching ? "<div id=\"fountainTextG\"><div id=\"fountainTextG_1\" class=\"fountainTextG\">W</div><div id=\"fountainTextG_2\" class=\"fountainTextG\">a</div><div id=\"fountainTextG_3\" class=\"fountainTextG\">l</div><div id=\"fountainTextG_4\" class=\"fountainTextG\">k</div><div id=\"fountainTextG_5\" class=\"fountainTextG\">i</div><div id=\"fountainTextG_6\" class=\"fountainTextG\">n</div><div id=\"fountainTextG_7\" class=\"fountainTextG\">g</div></div> " : "";
-                var html = "<div class=\"pokemon " + className + "\" data-pokemon-unique-id=\"" + pokemon.UniqueId + "\">\n                    <a class=\"delete \" data-uniqueId=\"" + pokemon.UniqueId + "\" title=\"Remove this Pokemon\"></a>\n                    <h1 class=\"name\">" + pokemonName + "</h1>\n                    <div class=\"image-container\">\n                        <img src=\"images/pokemon/" + pokemon.Id + ".png\" alt=\"" + pokemonName + "\" title=\"" + pokemonName + "\"/>\n                    </div>\n                     " + loading + "\n                    <h3 class=\"distance\">" + distance + "m</h3>\n                    <h3 class=\"timer\">" + estimate + "/" + expired + "</h3>\n                    <a class=\"snipe-him\" data-uniqueId=\"" + pokemon.UniqueId + "\" title=\"Snipe this Pokemon\"></a>\n                </div>";
+                var html = app.templates.SnipePokemonItem({
+                    PokemonName: pokemonName,
+                    Distance: distance,
+                    Expired: expired,
+                    Estimated: pokemon.EstimatedTime,
+                    IsCatching: pokemon.IsCatching,
+                    Priority: pokemon.Setting.Priority,
+                    ClassName: className,
+                    UniqueId: pokemon.UniqueId,
+                    Id: pokemon.Id
+                });
                 var pokemonElement = $(html);
                 pokemonElement.find('.snipe-him').click(_this.onSetAsTarget);
                 pokemonElement.find('.delete').click(_this.onRemoveSnipe);
@@ -38473,7 +38475,6 @@ var BotWSClient = (function () {
             var message = JSON.parse(event.data);
             var timestamp = Date.now();
             message.Timestamp = timestamp;
-            console.log("%c<<< INCOMING", "color: green", message);
             var type = message.$type;
             if (_.includes(type, ".ProfileEvent,")) {
                 if (_this.currentBotFamily === BotFamily.Undetermined) {

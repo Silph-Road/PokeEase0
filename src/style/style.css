@@ -1668,4 +1668,46 @@ select option {
   100% {
     transform: scale(1) translateY(0px); } }
 
-/*# sourceMappingURL=style.css.map */
+.iw-wrap.iw-pokemon {
+  border-style: solid;
+  border-width: 1px; }
+
+.iw-wrap.iw-VeryCommon {
+  border-color: #64B3DF; }
+  .iw-wrap.iw-VeryCommon .iw-status {
+    background-color: #64B3DF; }
+
+.iw-wrap.iw-Common {
+  border-color: #115778; }
+  .iw-wrap.iw-Common .iw-status {
+    background-color: #115778; }
+
+.iw-wrap.iw-Popular {
+  border-color: #9DE259; }
+  .iw-wrap.iw-Popular .iw-status {
+    background-color: #9DE259; }
+
+.iw-wrap.iw-Rare {
+  border-color: #548724; }
+  .iw-wrap.iw-Rare .iw-status {
+    background-color: #548724; }
+
+.iw-wrap.iw-VeryRare {
+  border-color: #FFE060; }
+  .iw-wrap.iw-VeryRare .iw-status {
+    background-color: #FFE060; }
+
+.iw-wrap.iw-Special {
+  border-color: #FFA93B; }
+  .iw-wrap.iw-Special .iw-status {
+    background-color: #FFA93B; }
+
+.iw-wrap.iw-Epic {
+  border-color: #FF5F5E; }
+  .iw-wrap.iw-Epic .iw-status {
+    background-color: #FF5F5E; }
+
+.iw-wrap.iw-Legendary {
+  border-color: #9D44BA; }
+  .iw-wrap.iw-Legendary .iw-status {
+    background-color: #9D44BA; }

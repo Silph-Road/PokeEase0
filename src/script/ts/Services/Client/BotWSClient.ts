@@ -78,7 +78,7 @@
         const timestamp = Date.now();
         message.Timestamp = timestamp;
 
-        console.log("%c<<< INCOMING", "color: green", message);
+        //console.log("%c<<< INCOMING", "color: green", message);
 
         const type = message.$type as string;
 
