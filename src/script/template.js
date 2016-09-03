@@ -1,5 +1,21 @@
 this["app"] = this["app"] || {};
 this["app"]["templates"] = this["app"]["templates"] || {};
+this["app"]["templates"]["Notifications"] = this["app"]["templates"]["Notifications"] || {};
+this["app"]["templates"]["Notifications"]["Journals"] = this["app"]["templates"]["Notifications"]["Journals"] || {};
+
+this["app"]["templates"]["Notifications"]["Journals"]["SnipeStartNotification"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
+
+  return "<div class=\"image\">\r\n    <img src=\"images/pokemon/"
+    + alias4(((helper = (helper = helpers.PokemonId || (depth0 != null ? depth0.PokemonId : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"PokemonId","hash":{},"data":data}) : helper)))
+    + ".png\" />\r\n</div>\r\n<div class=\"info\">\r\n    "
+    + alias4(((helper = (helper = helpers.PokemonName || (depth0 != null ? depth0.PokemonName : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"PokemonName","hash":{},"data":data}) : helper)))
+    + "\r\n    <div class=\"stats\">\r\n        Distance  : "
+    + alias4((helpers.round || (depth0 && depth0.round) || alias2).call(alias1,(depth0 != null ? depth0.Distance : depth0),{"name":"round","hash":{},"data":data}))
+    + "m <br />\r\n        Walk times: "
+    + alias4((helpers.toTime || (depth0 && depth0.toTime) || alias2).call(alias1,(depth0 != null ? depth0.Estimated : depth0),{"name":"toTime","hash":{},"data":data}))
+    + "\r\n    </div>\r\n</div>";
+},"useData":true});
 
 this["app"]["templates"]["PokemonInfoPopup"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
     var helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
@@ -27,6 +43,34 @@ this["app"]["templates"]["PokemonInfoPopup"] = Handlebars.template({"compiler":[
     + "/"
     + alias4(((helper = (helper = helpers.MaxCp || (depth0 != null ? depth0.MaxCp : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"MaxCp","hash":{},"data":data}) : helper)))
     + "</span>\r\n        </div>\r\n        <hr class=\"iw-gym-hr-defender\" style=\"display: none\">\r\n\r\n        <div class=\"iw-detail iw-latitude\">\r\n            <span class=\"iw-detail-header\">Latitude</span>\r\n            <span class=\"iw-detail-value\">"
+    + alias4((helpers.roundCoord || (depth0 && depth0.roundCoord) || alias2).call(alias1,(depth0 != null ? depth0.Latitude : depth0),{"name":"roundCoord","hash":{},"data":data}))
+    + "</span>\r\n        </div>\r\n        <div class=\"iw-detail iw-longitude\">\r\n            <span class=\"iw-detail-header\">Longitude</span>\r\n            <span class=\"iw-detail-value\">"
+    + alias4((helpers.roundCoord || (depth0 && depth0.roundCoord) || alias2).call(alias1,(depth0 != null ? depth0.Longitude : depth0),{"name":"roundCoord","hash":{},"data":data}))
+    + "</span>\r\n        </div>\r\n    </div>\r\n</div>";
+},"useData":true});
+
+this["app"]["templates"]["PokemonSnipeInfoPopup"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var helper, alias1=depth0 != null ? depth0 : {}, alias2=helpers.helperMissing, alias3="function", alias4=container.escapeExpression;
+
+  return "<div class=\"iw-wrap iw-pokemon-snip iw-"
+    + alias4(((helper = (helper = helpers.Rarity || (depth0 != null ? depth0.Rarity : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"Rarity","hash":{},"data":data}) : helper)))
+    + "\">\r\n    <div class=\"iw-status\">#"
+    + alias4(((helper = (helper = helpers.PokemonId || (depth0 != null ? depth0.PokemonId : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"PokemonId","hash":{},"data":data}) : helper)))
+    + " - "
+    + alias4((helpers.friendlyRarityName || (depth0 && depth0.friendlyRarityName) || alias2).call(alias1,(depth0 != null ? depth0.Rarity : depth0),{"name":"friendlyRarityName","hash":{},"data":data}))
+    + " </div>\r\n    <img src=\"images/pokemon/"
+    + alias4(((helper = (helper = helpers.PokemonId || (depth0 != null ? depth0.PokemonId : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"PokemonId","hash":{},"data":data}) : helper)))
+    + ".png\" alt=\""
+    + alias4(((helper = (helper = helpers.Name || (depth0 != null ? depth0.Name : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"Name","hash":{},"data":data}) : helper)))
+    + " icon\" class=\"iw-icon\">\r\n    <div class=\"iw-header iw-name\">\r\n        <span class=\"iw-detail-value\">"
+    + alias4(((helper = (helper = helpers.PokemonName || (depth0 != null ? depth0.PokemonName : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"PokemonName","hash":{},"data":data}) : helper)))
+    + "</span>\r\n        <span class=\"iw-detail-header\">"
+    + alias4(((helper = (helper = helpers.CatchType || (depth0 != null ? depth0.CatchType : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"CatchType","hash":{},"data":data}) : helper)))
+    + "</span>\r\n    </div>\r\n    <div class=\"iw-content\">\r\n        <div class=\"iw-detail\" >\r\n            <span class=\"iw-detail-header\">Distance</span>\r\n            <span class=\"iw-detail-value\">"
+    + alias4((helpers.round || (depth0 && depth0.round) || alias2).call(alias1,(depth0 != null ? depth0.Distance : depth0),{"name":"round","hash":{},"data":data}))
+    + "m</span>\r\n        </div>\r\n\r\n        <div class=\"iw-detail\">\r\n            <span class=\"iw-detail-header\">Estimated</span>\r\n            <span class=\"iw-detail-value\">"
+    + alias4((helpers.toTime || (depth0 && depth0.toTime) || alias2).call(alias1,(depth0 != null ? depth0.Estimated : depth0),{"name":"toTime","hash":{},"data":data}))
+    + " sec</span>\r\n        </div>\r\n        <hr class=\"iw-gym-hr-defender\" style=\"display: none\">\r\n\r\n        <div class=\"iw-detail iw-latitude\">\r\n            <span class=\"iw-detail-header\">Latitude</span>\r\n            <span class=\"iw-detail-value\">"
     + alias4((helpers.roundCoord || (depth0 && depth0.roundCoord) || alias2).call(alias1,(depth0 != null ? depth0.Latitude : depth0),{"name":"roundCoord","hash":{},"data":data}))
     + "</span>\r\n        </div>\r\n        <div class=\"iw-detail iw-longitude\">\r\n            <span class=\"iw-detail-header\">Longitude</span>\r\n            <span class=\"iw-detail-value\">"
     + alias4((helpers.roundCoord || (depth0 && depth0.roundCoord) || alias2).call(alias1,(depth0 != null ? depth0.Longitude : depth0),{"name":"roundCoord","hash":{},"data":data}))
@@ -63,4 +107,12 @@ this["app"]["templates"]["SnipePokemonItem"] = Handlebars.template({"1":function
     + "</h3>\r\n    <a class=\"snipe-him\" data-uniqueId=\""
     + alias4(((helper = (helper = helpers.UniqueId || (depth0 != null ? depth0.UniqueId : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"UniqueId","hash":{},"data":data}) : helper)))
     + "\" title=\"Snipe this Pokemon\"></a>\r\n</div>";
+},"useData":true});
+
+this["app"]["templates"]["SnipePokemonMarker"] = Handlebars.template({"compiler":[7,">= 4.0.0"],"main":function(container,depth0,helpers,partials,data) {
+    var helper;
+
+  return "<div class=\"marker snipe-marker\" style=\"margin-top:-25px; margin-left:-25px;position: absolute;width: 100px;height: 100px;z-index: 100;background-color:rgba(234, 45, 90, 0.9);border-radius: 50%;\">\r\n    <div style=\"width: 60px;height: 60px;background-image: url('images/pokemon/"
+    + container.escapeExpression(((helper = (helper = helpers.PokemonId || (depth0 != null ? depth0.PokemonId : depth0)) != null ? helper : helpers.helperMissing),(typeof helper === "function" ? helper.call(depth0 != null ? depth0 : {},{"name":"PokemonId","hash":{},"data":data}) : helper)))
+    + ".png');background-size: contain;background-position: center center;background-repeat: no-repeat;margin-top: 20px;margin-left: 20px;\"></div>\r\n</div>";
 },"useData":true});

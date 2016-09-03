@@ -14,6 +14,12 @@
     public addNotificationExample = (): void => {
         this.addNotification("Example", "This is a toast notification");
     }
+     public addHumanSnipeReachedDestination= (ev: IHumanWalkSnipeReachedEvent): void => {
+        this.addNotification("Snipe reach", "Searching for pokemon ....","#2196f3","#fff", Math.max(3000,ev.PauseDuration*1000));
+    }
+     public addHumanWalkSnipeStart = (startEvent: IHumanWalkSnipeStartEvent): void => {
+        //alert('alert : add event to toast.....')
+    }
 
     public addNotificationPokeStopUsed = (fortUsed: IFortUsedEvent): void => {
         if (!this.config.notificationSettings.pokestopUsed) {

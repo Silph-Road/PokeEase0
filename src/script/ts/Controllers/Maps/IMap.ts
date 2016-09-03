@@ -6,4 +6,6 @@
     targetFort: (target: IFortTargetEvent) => void;
     usePokeStop: (pokeStopUsed: IFortUsedEvent) => void;
     onPokemonCapture: (pokemonCapture: IPokemonCaptureEvent) => void;
+    onSnipePokemonStart: (snipePokemon: IHumanWalkSnipeStartEvent) => void;
+    onHumanSnipeReachedDestination: (ev: IHumanWalkSnipeReachedEvent) => void;
 }

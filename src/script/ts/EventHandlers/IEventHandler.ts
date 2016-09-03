@@ -24,6 +24,8 @@ interface IEventHandler {
     onInventoryList: (inventoryList: IInventoryListEvent) => void;
     onPlayerStats: (playerStats: IPlayerStatsEvent) => void;
     onHumanSnipeList: (pokemonList: IHumanWalkSnipeListEvent) => void;
+    onHumanSnipeStart : (snipeData: IHumanWalkSnipeStartEvent) => void;
+    onHumanSnipeReachedDestination :(ev: IHumanWalkSnipeReachedEvent) => void;
     onSendPokemonListRequest: (request: IRequest) => void;
     onSendEggsListRequest: (request: IRequest) => void;
     onSendInventoryListRequest: (request: IRequest) => void;

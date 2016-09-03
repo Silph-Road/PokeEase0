@@ -22,11 +22,12 @@ class GoogleMap implements IMap {
     private playerMarker: google.maps.Marker;
     private locationHistory: Array<any> = [];
     private locationLine: google.maps.Polyline;
-
+    private snipePath : google.maps.Polyline;
     // TODO: refactor this big time
     private pokestops: { [id: string]: IGoogleMapPokestopInfo } = {};
     private gyms: { [id: string]: IGoogleMapGymInfo } = {};
     private capMarkers: Array<CaptureMarker> = [];
+    private snipeMarker :SnipeMarker;
 
     constructor(config: IMapConfig) {
         this.config = config;
@@ -336,9 +337,6 @@ class GoogleMap implements IMap {
         ]
     }
 ]
-
-
-
         // Initialize the map.
         var mapOptions: google.maps.MapOptions = {
             zoom: 16,
@@ -361,7 +359,7 @@ class GoogleMap implements IMap {
                 scaledSize: new google.maps.Size(50, 55),                
                 anchor: new google.maps.Point(25, 45)
             },
-            zIndex: 300
+            zIndex: 300000
         });
 
         /*setTimeout(() => {
@@ -421,6 +419,7 @@ class GoogleMap implements IMap {
             strokeWeight: 4
         });
         this.locationLine.setMap(this.map);
+        this.UpdateDirectionLineToSnipe();
     }
 
     public setPokeStops = (pokeStops: IPokeStopEvent[]): void => {
@@ -531,6 +530,55 @@ class GoogleMap implements IMap {
        
     }
 
+    public onSnipePokemonStart(snipePokemon: IHumanWalkSnipeStartEvent) : void {
+       console.log(snipePokemon);
+       if(this.snipeMarker) {
+            //alert('remove');
+            this.snipeMarker.remove()
+        }
+
+        let name = this.config.translationController.translation.pokemonNames[snipePokemon.PokemonId]
+        const snipeMarker = new SnipeMarker (
+            new google.maps.LatLng(snipePokemon.Latitude, snipePokemon.Longitude),
+            this.map,
+            snipePokemon ,
+            {
+                PokemonId: snipePokemon.PokemonId,
+                Name:name
+            }
+        );
+        
+        this.snipeMarker = snipeMarker;
+        this.UpdateDirectionLineToSnipe();
+    }
+    public onHumanSnipeReachedDestination(ev:IHumanWalkSnipeReachedEvent) : void {
+        this.snipeMarker.remove();
+        this.snipeMarker == null;
+    }
+    private UpdateDirectionLineToSnipe() :void {
+        if(this.snipePath) {
+            this.snipePath.setMap(null);
+            this.snipePath = null;
+        }
+        if(this.snipeMarker == null) return;
+
+        let currentPos = this.playerMarker.getPosition()
+        let snipePos = this.snipeMarker.getPosition();
+        var directionLine = [
+          {lat:snipePos.lat(), lng: snipePos.lng()},
+          {lat: currentPos.lat(), lng: currentPos.lng()},
+        ];
+
+        this.snipePath = new google.maps.Polyline({
+          path: directionLine,
+          geodesic: true,
+          strokeColor: '#FF0000',
+          strokeOpacity: 1.0,
+          strokeWeight: 2
+        });
+
+        this.snipePath.setMap(this.map);
+    }
     public onPokemonCapture(pokemonCapture: IPokemonCaptureEvent): void {
         console.log(pokemonCapture);
         let name = this.config.translationController.translation.pokemonNames[pokemonCapture.Id]

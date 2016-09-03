@@ -3,6 +3,11 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
+var app = (function () {
+    function app() {
+    }
+    return app;
+}());
 var MainMenuController = (function () {
     function MainMenuController(config) {
         var _this = this;
@@ -153,6 +158,7 @@ var GoogleMap = (function () {
                 strokeWeight: 4
             });
             _this.locationLine.setMap(_this.map);
+            _this.UpdateDirectionLineToSnipe();
         };
         this.setPokeStops = function (pokeStops) {
             var incomingPokestops = {};
@@ -679,7 +685,7 @@ var GoogleMap = (function () {
                 scaledSize: new google.maps.Size(50, 55),
                 anchor: new google.maps.Point(25, 45)
             },
-            zIndex: 300
+            zIndex: 300000
         });
     }
     GoogleMap.prototype.targetFort = function (target) {
@@ -697,6 +703,45 @@ var GoogleMap = (function () {
         var newContent = this.getStopInfoWindowContent(pStop.event);
         var newContentHtml = newContent.html();
         pStop.infoWindow.setContent(newContentHtml);
+    };
+    GoogleMap.prototype.onSnipePokemonStart = function (snipePokemon) {
+        console.log(snipePokemon);
+        if (this.snipeMarker) {
+            this.snipeMarker.remove();
+        }
+        var name = this.config.translationController.translation.pokemonNames[snipePokemon.PokemonId];
+        var snipeMarker = new SnipeMarker(new google.maps.LatLng(snipePokemon.Latitude, snipePokemon.Longitude), this.map, snipePokemon, {
+            PokemonId: snipePokemon.PokemonId,
+            Name: name
+        });
+        this.snipeMarker = snipeMarker;
+        this.UpdateDirectionLineToSnipe();
+    };
+    GoogleMap.prototype.onHumanSnipeReachedDestination = function (ev) {
+        this.snipeMarker.remove();
+        this.snipeMarker == null;
+    };
+    GoogleMap.prototype.UpdateDirectionLineToSnipe = function () {
+        if (this.snipePath) {
+            this.snipePath.setMap(null);
+            this.snipePath = null;
+        }
+        if (this.snipeMarker == null)
+            return;
+        var currentPos = this.playerMarker.getPosition();
+        var snipePos = this.snipeMarker.getPosition();
+        var directionLine = [
+            { lat: snipePos.lat(), lng: snipePos.lng() },
+            { lat: currentPos.lat(), lng: currentPos.lng() },
+        ];
+        this.snipePath = new google.maps.Polyline({
+            path: directionLine,
+            geodesic: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 1.0,
+            strokeWeight: 2
+        });
+        this.snipePath.setMap(this.map);
     };
     GoogleMap.prototype.onPokemonCapture = function (pokemonCapture) {
         console.log(pokemonCapture);
@@ -871,6 +916,12 @@ var LeafletMap = (function () {
             : this.pokeStopIcons[PokeStopStatus.VisitedLure];
         pokeStop.LMarker.setIcon(icon);
     };
+    LeafletMap.prototype.onHumanSnipeReachedDestination = function (ev) {
+        alert('not implemented --  onHumanSnipeReachedDestination');
+    };
+    LeafletMap.prototype.onSnipePokemonStart = function (snipePokemon) {
+        alert('not implement ---onSnipePokemonStart');
+    };
     LeafletMap.prototype.onPokemonCapture = function (pokemonCapture) {
         var _this = this;
         var posArr = [pokemonCapture.Latitude, pokemonCapture.Longitude];
@@ -907,6 +958,53 @@ var MapProvider;
     MapProvider[MapProvider["GMaps"] = 0] = "GMaps";
     MapProvider[MapProvider["OSM"] = 1] = "OSM";
 })(MapProvider || (MapProvider = {}));
+var SnipeMarker = (function (_super) {
+    __extends(SnipeMarker, _super);
+    function SnipeMarker(latlng, map, sender, args) {
+        _super.call(this);
+        this.latlng = latlng;
+        this.args = args;
+        this.setMap(map);
+        this.map = map;
+        this.current = sender;
+    }
+    SnipeMarker.prototype.remove = function () {
+        this.setMap(null);
+        $(this.div).remove();
+    };
+    SnipeMarker.prototype.draw = function () {
+        var div = this.div;
+        if (!div) {
+            var markerHtml = app.templates.SnipePokemonMarker({ PokemonId: this.current.PokemonId });
+            div = this.div = $(markerHtml)[0];
+            var panes = this.getPanes();
+            panes.overlayMouseTarget.appendChild(div);
+            var me = this;
+            var map_2 = this.map;
+            var pokemonName = this.args.Name;
+            var popupData_2 = this.current;
+            popupData_2.PokemonName = pokemonName;
+            google.maps.event.addDomListener(div, "click", function (event) {
+                var infowindow = new google.maps.InfoWindow({
+                    content: app.templates.PokemonSnipeInfoPopup(popupData_2)
+                });
+                infowindow.open(map_2, me);
+                window.setIwStyles();
+                event.stopPropagation();
+                google.maps.event.trigger(self, "click");
+            });
+        }
+        var point = this.getProjection().fromLatLngToDivPixel(this.latlng);
+        if (point) {
+            div.style.left = (point.x - 30) + 'px';
+            div.style.top = (point.y - 30) + 'px';
+        }
+    };
+    SnipeMarker.prototype.getPosition = function () {
+        return this.latlng;
+    };
+    return SnipeMarker;
+}(google.maps.OverlayView));
 var EggMenuController = (function () {
     function EggMenuController(config) {
         var _this = this;
@@ -1317,13 +1415,11 @@ var HumanSnipeMenuController = (function () {
             for (var i = 0; i < pokemons.length; i++) {
                 var pokemon = pokemons[i];
                 var pokemonName = _this.config.translationController.translation.pokemonNames[pokemon.Id];
-                var distance = Math.round(pokemon.Distance);
                 var expired = Math.round((new Date(pokemon.ExpiredTime).valueOf() - (new Date()).valueOf()) / 1000);
-                var estimate = Math.round(pokemon.EstimatedTime);
                 var className = pokemon.IsCatching ? "walking-to" : (pokemon.Setting.Priority == 0 ? "targeted" : "");
                 var html = app.templates.SnipePokemonItem({
                     PokemonName: pokemonName,
-                    Distance: distance,
+                    Distance: pokemon.Distance,
                     Expired: expired,
                     Estimated: pokemon.EstimatedTime,
                     IsCatching: pokemon.IsCatching,
@@ -1366,6 +1462,8 @@ var DesktopNotificationController = (function () {
         var _this = this;
         this.exampleClicked = function (ev) {
             _this.addNotificationExample();
+        };
+        this.addHumanSnipeReachedDestination = function (ev) {
         };
         this.checkPermissions = function () {
             if (typeof Notification === "undefined") {
@@ -1492,6 +1590,8 @@ var DesktopNotificationController = (function () {
                 icon: "images/items/0.png"
             });
         };
+        this.addHumanWalkSnipeStart = function (startEvent) {
+        };
         this.addNotification = function (title, options) {
             var notification = new Notification(title, options);
         };
@@ -1600,6 +1700,12 @@ var JournalNotificationController = (function () {
             var html = "<div class=\"info\" title=\"" + itemName + "\">\n                          <div class=\"item\"><img src=\"images/items/" + itemRecycle.Id + ".png\"/>x" + itemRecycle.Count + "</div>\n                          <div class=\"stats\">+" + itemRecycle.Count + " free space</div>\n                      </div>";
             _this.addNotification(itemRecycle, html, "recycle");
         };
+        this.addHumanSnipeReachedDestination = function () {
+        };
+        this.addHumanWalkSnipeStart = function (startEvent) {
+            var data = startEvent;
+            _this.addNotification(startEvent, app.templates.Notifications.Journals.SnipeStartNotification(data), "Snipe");
+        };
         this.addNotificationPokemonTransfer = function (pokemonTransfer) {
             if (!_this.config.notificationSettings.pokemonTransfer) {
                 return;
@@ -1611,7 +1717,7 @@ var JournalNotificationController = (function () {
         };
         this.addNotification = function (event, innerHtml, eventType, extendedInfoHtml) {
             extendedInfoHtml = extendedInfoHtml || "";
-            var eventTypeName = _this.config.translationController.translation.eventTypes[eventType];
+            var eventTypeName = _this.config.translationController.translation.eventTypes[eventType] || eventType;
             var dateStr = moment().format("MMMM Do YYYY, HH:mm:ss");
             var html = "<div class=\"event " + eventType + "\">\n    <div class=\"item-container\">\n        <i class=\"fa fa-times dismiss\"></i>\n        " + innerHtml + "\n        <span class=\"event-type\">" + eventTypeName + "</span>\n        <span class=\"timestamp\">0 seconds ago</span>\n        <div class=\"category\"></div>\n    </div>\n    <div class=\"extended-info\">\n        Date <span class=\"extended-date\">" + dateStr + "</span><br/>\n        " + extendedInfoHtml + "\n    </div>\n</div>";
             var element = $(html);
@@ -1684,6 +1790,7 @@ var NotificationType;
     NotificationType[NotificationType["IncubatorStatus"] = 5] = "IncubatorStatus";
     NotificationType[NotificationType["ItemRecycle"] = 6] = "ItemRecycle";
     NotificationType[NotificationType["PokemonTransfer"] = 7] = "PokemonTransfer";
+    NotificationType[NotificationType["HumanWalkSnipe"] = 8] = "HumanWalkSnipe";
 })(NotificationType || (NotificationType = {}));
 var ToastNotificationController = (function () {
     function ToastNotificationController(config) {
@@ -1693,6 +1800,11 @@ var ToastNotificationController = (function () {
         };
         this.addNotificationExample = function () {
             _this.addNotification("Example", "This is a toast notification");
+        };
+        this.addHumanSnipeReachedDestination = function (ev) {
+            _this.addNotification("Snipe reach", "Searching for pokemon ....", "#2196f3", "#fff", Math.max(3000, ev.PauseDuration * 1000));
+        };
+        this.addHumanWalkSnipeStart = function (startEvent) {
         };
         this.addNotificationPokeStopUsed = function (fortUsed) {
             if (!_this.config.notificationSettings.pokestopUsed) {
@@ -2038,6 +2150,15 @@ var InterfaceHandler = (function () {
         this.config.snipesMenuController.updateSnipePokemonList(pokemonList);
         var currentSnipePokemonCount = pokemonList.Pokemons.length;
         this.config.mainMenuController.setSnipePokemonCount(currentSnipePokemonCount);
+    };
+    InterfaceHandler.prototype.onHumanSnipeReachedDestination = function (ev) {
+        this.config.map.onHumanSnipeReachedDestination(ev);
+        _.each(this.config.notificationControllers, function (ctrl) { return ctrl.addHumanSnipeReachedDestination(ev); });
+    };
+    InterfaceHandler.prototype.onHumanSnipeStart = function (snipePokemon) {
+        snipePokemon.PokemonName = this.config.translationController.translation.pokemonNames[snipePokemon.PokemonId];
+        this.config.map.onSnipePokemonStart(snipePokemon);
+        _.each(this.config.notificationControllers, function (ctrl) { return ctrl.addHumanWalkSnipeStart(snipePokemon); });
     };
     InterfaceHandler.prototype.onSendInventoryListRequest = function (request) {
         this.config.inventoryMenuController.inventoryListRequested(request);
@@ -38646,6 +38767,28 @@ var BotWSClient = (function () {
                         Pokemons: snipeEv.Pokemons.$values
                     };
                     _.each(_this.config.eventHandlers, function (eh) { return eh.onHumanSnipeList(snipesList_1); });
+                }
+                switch (snipeEv.Type) {
+                    case HumanWalkEventTypes.StartWalking:
+                        var snipeStartEV_1 = {
+                            Latitude: snipeEv.Latitude,
+                            Longitude: snipeEv.Longitude,
+                            PokemonId: snipeEv.PokemonId,
+                            Timestamp: snipeEv.Timestamp,
+                            Distance: snipeEv.Distance,
+                            Estimated: snipeEv.Estimate,
+                            Rarity: snipeEv.Rarity
+                        };
+                        _.each(_this.config.eventHandlers, function (eh) { return eh.onHumanSnipeStart(snipeStartEV_1); });
+                        break;
+                    case HumanWalkEventTypes.DestinationReached:
+                        var reachedEV_1 = {
+                            UniqueId: snipeEv.UniqueId,
+                            PauseDuration: snipeEv.PauseDuration,
+                            Timestamp: snipeEv.Timestamp
+                        };
+                        _.each(_this.config.eventHandlers, function (eh) { return eh.onHumanSnipeReachedDestination(reachedEV_1); });
+                        break;
                 }
             }
             else {

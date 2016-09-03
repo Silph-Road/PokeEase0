@@ -11,6 +11,9 @@
     private exampleClicked = (ev: JQueryEventObject): void => {
         this.addNotificationExample();
     }
+    public addHumanSnipeReachedDestination= (ev:IHumanWalkSnipeReachedEvent): void => {
+        
+    }
 
     private checkPermissions = (): boolean => {
         if (typeof Notification === "undefined") {
@@ -148,7 +151,11 @@ IV: ${roundedPerfection}`,
             icon: `images/items/0.png`
         });
     }
+    public addHumanWalkSnipeStart = (startEvent: IHumanWalkSnipeStartEvent): void => {
 
+        //alert('alert : add event to desktop.....')
+        
+    }
     private addNotification = (title: string, options: NotificationOptions) => {
         const notification = new Notification(title, options);
     }

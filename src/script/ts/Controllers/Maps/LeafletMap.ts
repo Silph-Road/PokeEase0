@@ -126,7 +126,13 @@
             : this.pokeStopIcons[PokeStopStatus.VisitedLure];
         pokeStop.LMarker.setIcon(icon);
     }
+    public onHumanSnipeReachedDestination(ev:IHumanWalkSnipeReachedEvent) : void {
+        alert('not implemented --  onHumanSnipeReachedDestination')
+    }
 
+    public onSnipePokemonStart (snipePokemon: IHumanWalkSnipeStartEvent) : void {
+        alert('not implement ---onSnipePokemonStart')
+    }
     public onPokemonCapture(pokemonCapture: IPokemonCaptureEvent): void {
         const posArr = [pokemonCapture.Latitude, pokemonCapture.Longitude];
         const img = new Image();

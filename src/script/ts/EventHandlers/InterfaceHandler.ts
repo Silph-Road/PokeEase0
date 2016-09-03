@@ -231,7 +231,18 @@
         let currentSnipePokemonCount = pokemonList.Pokemons.length;
         this.config.mainMenuController.setSnipePokemonCount(currentSnipePokemonCount);
     }
+    public onHumanSnipeReachedDestination(ev: IHumanWalkSnipeReachedEvent) :void {
+        this.config.map.onHumanSnipeReachedDestination(ev);
+        _.each(this.config.notificationControllers, ctrl => ctrl.addHumanSnipeReachedDestination(ev));
+        
+    }
+    public onHumanSnipeStart(snipePokemon :IHumanWalkSnipeStartEvent) : void {
+        snipePokemon.PokemonName = this.config.translationController.translation.pokemonNames[snipePokemon.PokemonId]
 
+        this.config.map.onSnipePokemonStart(  snipePokemon);
+        _.each(this.config.notificationControllers, ctrl => ctrl.addHumanWalkSnipeStart(snipePokemon));
+        
+    }
     public onSendInventoryListRequest(request: IRequest): void {
         this.config.inventoryMenuController.inventoryListRequested(request);
     }

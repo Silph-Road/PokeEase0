@@ -6,7 +6,10 @@ Handlebars.registerHelper('toLowerCase', function (str) {
 });
 
 Handlebars.registerHelper('round', function (str) {
-    return math.round(str);
+    return Math.round(str);
+});
+Handlebars.registerHelper('toTime', function (totalSec) {
+    return Math.round((totalSec / 60)) + " min " + totalSec % 60 + " sec";
 });
 
 Handlebars.registerHelper("friendlyRarityName", function (rarity) {

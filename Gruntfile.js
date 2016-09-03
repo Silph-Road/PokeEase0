@@ -7,7 +7,7 @@ module.exports = function(grunt) {
 
         ts: {
             default: {
-                src: ["src/script/**/**/*.ts", "!node_modules/**"],
+                src: ["src/script/**/*.ts", "!node_modules/**"],
                 dest: "src/script/script.js"
             }
         },
@@ -31,7 +31,7 @@ module.exports = function(grunt) {
                 },
             },
             ts: {
-                files: ['**/*.ts', '**/**/*.ts', '**/**/**/*.ts', '**/**/**/**/*.ts'],
+                files: ['src/script/**/*.ts'],
                 tasks: ['ts'],
                 options: {
                     spawn: false,
@@ -48,18 +48,16 @@ module.exports = function(grunt) {
         handlebars: {
             compile: {
                 options: {
-                    namespace: function(filename) {
-                        //var s  = filename.substring(filename.lastIndexOf('/'), )
-
-                        //var names = filename.replace(/src\/script\/templates\/(.*)\.hbs/, '$1');
-                        //return names.split('/').join('.');
-                        return "app.templates";
+                    namespace: function (filename) {
+                        var names = filename.split('/')//filename.replace(/src\/script\/templates\/(.*)\/(.*)\.hbs/, '$1');
+                        names = names.slice(2, names.length-1)
+                        return "app."+ names.join('.');
                     },
                     processName: function(filename) { // input: templates/_header.hbs
-                        console.log(filename);
-                        return filename.replace(/src\/script\/templates\/(.*)\.hbs/, '$1')
-                            //var pieces = filePath.split('/');
-                            // return pieces[pieces.length - 1];       // output: _header.hbs
+                        //return filename.replace(/src\/script\/templates\/(.*)\.hbs/, '$1')
+                        var pieces = filename.split('/');
+                        var name = pieces[pieces.length - 1];
+                        return name.replace('.hbs', '');
                     }
                 },
                 files: {
@@ -208,7 +206,7 @@ module.exports = function(grunt) {
         'useminPrepare',
         'concat:generated',
         'cssmin:generated',
-        //'uglify:generated',
+        'uglify:generated',
        // 'filerev',
         'usemin'
     ]);
