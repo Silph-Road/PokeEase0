@@ -39,7 +39,7 @@
     }
     private onSetAsTarget :any = (ev:any) =>{
          const uniqueId = $(ev.target).attr('data-uniqueId');
-         this.config.requestSender.sendHumanSnipPokemonSnipeRequest(uniqueId);
+         this.config.requestSender.sendHumanSnipePokemonSnipeRequest(uniqueId);
     }
      private onRemoveSnipe :any = (ev:any) =>{
         const uniqueId = $(ev.target).attr("data-uniqueId");

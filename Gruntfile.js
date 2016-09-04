@@ -65,19 +65,20 @@ module.exports = function (grunt) {
                 files: {
                     'src/script/template.js': ['src/script/**/*.hbs']
                 }
+            }
         },
         watch: {
             sass: {
                 files: ['**/*.scss'],
                 tasks: ['sass'],
                 options: {
-                spawn: false,
+                    spawn: false,
                 },
             },
             ts: {
-                 files: ['**/*.ts','**/**/*.ts','**/**/**/*.ts','**/**/**/**/*.ts'],
-                    tasks: ['ts'],
-                    options: {
+                files: ['**/*.ts', '**/**/*.ts', '**/**/**/*.ts', '**/**/**/**/*.ts'],
+                tasks: ['ts'],
+                options: {
                     spawn: false,
                 },
             }
@@ -85,7 +86,7 @@ module.exports = function (grunt) {
         rename: {
             jquery: {
                 files: [
-                    {src: ['path/to/[file or folder]'], dest: 'path/to/[file-renamed or folder-renamed]'},
+                    { src: ['path/to/[file or folder]'], dest: 'path/to/[file-renamed or folder-renamed]' },
                 ]
             }
         },
@@ -164,9 +165,9 @@ module.exports = function (grunt) {
         concat: {
             generated: {
                 files: [{
-                        dest: '.tmp/script/app.js',
-                        src: ['src/script/*.js']
-                    },
+                    dest: '.tmp/script/app.js',
+                    src: ['src/script/*.js']
+                },
                     {
                         dest: '.tmp/script/vendor.js',
                         src: [
@@ -183,7 +184,7 @@ module.exports = function (grunt) {
                               'src/external/handlebars/handlebars.js',
                               'src/external/ion.rangeSlider/js/ion.rangeSlider.js',
                               'src/external/jquery.easing.compatibility.js',
-                            ]
+                        ]
                     },
                     {
                         dest: '.tmp/css/site.css',
@@ -228,9 +229,6 @@ module.exports = function (grunt) {
                 dest: 'dist'
             }
         },
-        usemin: {
-            html: 'public/index.html',
-        },
         bower_main: {
             copy: {
                 options: {
@@ -242,7 +240,10 @@ module.exports = function (grunt) {
             install: {
 
             }
-        }
+        },
+        usemin: {
+            html: 'public/index.html',
+        },
     });
     /*grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-html-build');

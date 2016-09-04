@@ -29,5 +29,7 @@
   "license": "GPL-3.0",
   "dependencies": {
     "express": "^4.14.0"
-  }
+  },
+  "scripts": { "postinstall": 
+                 "grunt build" }
 }

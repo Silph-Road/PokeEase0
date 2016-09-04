@@ -428,15 +428,6 @@
         this.webSocket.send(requestStr);
     }
 	
-	    public sendHumanSnipPokemonListUpdateRequest = ():void => {
-        const necroRequest: IRequest = { Command: "PokemonSnipeList" };
-        _.each(this.config.eventHandlers, eh => eh.onSendHumanSnipPokemonListUpdateRequest(necroRequest));
-       
-        if (this.currentBotFamily === BotFamily.Undetermined || this.currentBotFamily === BotFamily.Necro) {
-            this.sendRequest(necroRequest);
-        }
-    }
-	
     public sendHumanSnipePokemonRemoveRequest = (pokemonId: string): void => {
         const request: IRequest = {
              Command: "RemovePokemon",

@@ -8,6 +8,11 @@ var app = (function () {
     }
     return app;
 }());
+var ConsoleController = (function () {
+    function ConsoleController(config) {
+        var _this = this;
+        this.log = function (logEvent) {
+            var items = _this.config.consoleElement.find(".items");
             var html = "<div class=\"event\">\n    <div class=\"item\" style=\"font-family:monospace; white-space: pre-wrap; color:" + logEvent.Color + "\">" + logEvent.Message + "</div>\n</div>";
             var element = $(html);
             var scroll = _this.isAtBottom(items);
@@ -1508,7 +1513,7 @@ var HumanSnipeMenuController = (function () {
         };
         this.onSetAsTarget = function (ev) {
             var uniqueId = $(ev.target).attr('data-uniqueId');
-            _this.config.requestSender.sendHumanSnipPokemonSnipeRequest(uniqueId);
+            _this.config.requestSender.sendHumanSnipePokemonSnipeRequest(uniqueId);
         };
         this.onRemoveSnipe = function (ev) {
             var uniqueId = $(ev.target).attr("data-uniqueId");
@@ -2188,7 +2193,6 @@ var InterfaceHandler = (function () {
         this.config.mainMenuController.setPokemonCount(this.currentPokemonCount);
     };
     InterfaceHandler.prototype.onGetConfig = function (configEvent) {
-    };
     };
     InterfaceHandler.prototype.onPokemonList = function (pokemonList) {
         this.config.pokemonMenuController.updatePokemonList(pokemonList);
@@ -38984,6 +38988,26 @@ var BotWSClient = (function () {
             console.log("%c>>> OUTGOING:", "color: red", request);
             var requestStr = JSON.stringify(request);
             _this.webSocket.send(requestStr);
+        };
+        this.sendHumanSnipePokemonRemoveRequest = function (pokemonId) {
+            var request = {
+                Command: "RemovePokemon",
+                Data: pokemonId,
+                PokemonId: pokemonId,
+                Id: pokemonId
+            };
+            _.each(_this.config.eventHandlers, function (eh) { return eh.onSendHumanSnipePokemonRemoveRequest(request); });
+            _this.sendRequest(request);
+        };
+        this.sendHumanSnipePokemonSnipeRequest = function (pokemonId) {
+            var request = {
+                Command: "SnipePokemon",
+                Data: pokemonId,
+                PokemonId: pokemonId,
+                Id: pokemonId
+            };
+            _.each(_this.config.eventHandlers, function (eh) { return eh.onSendHumanSnipePokemonRequest(request); });
+            _this.sendRequest(request);
         };
         this.sendHumanSnipPokemonListUpdateRequest = function () {
             var necroRequest = { Command: "PokemonSnipeList" };
