@@ -10,6 +10,10 @@
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
+public/
+src/script/script.js
+src/script/script.js.map
+
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
