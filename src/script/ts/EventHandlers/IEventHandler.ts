@@ -1,4 +1,5 @@
 interface IEventHandler {
+    onLog: (logEvent: ILogEvent) => void;
     onPlayerLevelUp: (levelUp: IPlayerLevelUpEvent) => void;
     onUpdatePosition: (location: IUpdatePositionEvent) => void;
     onPokeStopList: (forts: IFortEvent[]) => void;
@@ -19,11 +20,14 @@ interface IEventHandler {
     onItemRecycle: (itemRecycle: IItemRecycleEvent) => void;
     onPokemonTransfer: (pokemonTransfer: IPokemonTransferEvent) => void;
 
+    onGetConfig: (configEvent: IConfigEvent) => void;
     onPokemonList: (pokemonList: IPokemonListEvent) => void;
     onEggList: (eggList: IEggListEvent) => void;
     onInventoryList: (inventoryList: IInventoryListEvent) => void;
     onPlayerStats: (playerStats: IPlayerStatsEvent) => void;
     onHumanSnipeList: (pokemonList: IHumanWalkSnipeListEvent) => void;
+
+    onSendGetConfigRequest: (request: IRequest) => void;
     onSendPokemonListRequest: (request: IRequest) => void;
     onSendEggsListRequest: (request: IRequest) => void;
     onSendInventoryListRequest: (request: IRequest) => void;
@@ -34,5 +38,6 @@ interface IEventHandler {
     onSendHumanSnipePokemonRequest: (request: IRequest) => void;
     onSendHumanSnipPokemonListUpdateRequest: (request:IRequest) => void;
     onSendHumanSnipePokemonRemoveRequest : (request:IRequest) => void;
+
     onUnknownEvent?: (message: any) => void;
 }

@@ -63,12 +63,13 @@ module.exports = function (grunt) {
                     'src/script/template.js': ['src/script/**/*.hbs']
                 }
             }
-        }
+            }
+        },
     });
 
     grunt.loadNpmTasks('grunt-contrib-handlebars');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-ts');
     grunt.loadNpmTasks('grunt-sass');
-    grunt.registerTask('default', ['ts', 'sass','handlebars', 'watch']);
+    grunt.registerTask('default', ['ts', 'sass','watch']);
 };
