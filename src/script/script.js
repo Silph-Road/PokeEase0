@@ -8,36 +8,6 @@ var app = (function () {
     }
     return app;
 }());
-var ConsoleController = (function () {
-    function ConsoleController(config) {
-        var _this = this;
-        this.log = function (logEvent) {
-            var items = _this.config.consoleElement.find(".items");
-            var html = "<div class=\"event\">\n    <div class=\"item\" style=\"font-family:monospace; white-space: pre-wrap; color:" + logEvent.Color + "\">" + logEvent.Message + "</div>\n</div>";
-            var element = $(html);
-            var scroll = _this.isAtBottom(items);
-            items.append(element);
-            if (scroll) {
-                _this.scrollToBottom(items);
-            }
-        };
-        this.isAtBottom = function (container) {
-            var scrollTop = container.scrollTop();
-            var innerHeight = container.innerHeight();
-            var scrollHeight = container[0].scrollHeight;
-            var atBottom = scrollTop + innerHeight > scrollHeight - 200;
-            return atBottom;
-        };
-        this.config = config;
-    }
-    ConsoleController.prototype.scrollToBottom = function (container) {
-        container.finish().animate({
-            scrollTop: container.prop("scrollHeight") - container.height()
-        }, 100);
-    };
-    ;
-    return ConsoleController;
-}());
 var MainMenuController = (function () {
     function MainMenuController(config) {
         var _this = this;
@@ -1488,7 +1458,7 @@ var HumanSnipeMenuController = (function () {
                 return;
             }
             _this.config.snipeMenuElement.find(".pokemon").remove();
-            var pokemons = _this.getOrderedPokemons();
+            var pokemons = _this.pokemonList;
             for (var i = 0; i < pokemons.length; i++) {
                 var pokemon = pokemons[i];
                 var pokemonName = _this.config.translationController.translation.pokemonNames[pokemon.Id];
@@ -1516,19 +1486,15 @@ var HumanSnipeMenuController = (function () {
             _this.config.requestSender.sendHumanSnipPokemonSnipeRequest(uniqueId);
         };
         this.onRemoveSnipe = function (ev) {
-            var uniqueId = $(ev.target).attr('data-uniqueId');
-            $(ev.target).closest('.pokemon').fadeOut(500);
-            _this.config.requestSender.sendHumanSnipPokemonRemoveRequest(uniqueId);
+            var uniqueId = $(ev.target).attr("data-uniqueId");
+            $(ev.target).closest(".pokemon").fadeOut(500);
+            _this.config.requestSender.sendHumanSnipePokemonRemoveRequest(uniqueId);
         };
         this.pokemonListRequested = function (request) {
         };
         this.updateSnipePokemonList = function (pokemonList) {
             _this.pokemonList = pokemonList.Pokemons;
             _this.updatePokemonListInner();
-        };
-        this.getOrderedPokemons = function () {
-            var pokemons;
-            return _this.pokemonList;
         };
         this.config = config;
     }
@@ -2128,6 +2094,9 @@ var InterfaceHandler = (function () {
         this.currentItemCount = 0;
         this.latestPlayerStats = null;
     }
+    InterfaceHandler.prototype.onLog = function (logEvent) {
+        this.config.consoleController.log(logEvent);
+    };
     InterfaceHandler.prototype.onFortTarget = function (fortTarget) {
         this.config.map.targetFort(fortTarget);
     };
@@ -2146,6 +2115,7 @@ var InterfaceHandler = (function () {
     InterfaceHandler.prototype.onProfile = function (profile) {
         this.config.mainMenuController.updateProfileData(profile);
         this.config.profileInfoController.setProfileData(profile);
+        this.config.requestSender.sendGetConfigRequest();
         this.config.requestSender.sendPlayerStatsRequest();
         this.config.requestSender.sendGetPokemonSettingsRequest();
         this.config.requestSender.sendInventoryListRequest();
@@ -2192,6 +2162,8 @@ var InterfaceHandler = (function () {
         this.currentPokemonCount--;
         this.config.mainMenuController.setPokemonCount(this.currentPokemonCount);
     };
+    InterfaceHandler.prototype.onGetConfig = function (configEvent) {
+    };
     InterfaceHandler.prototype.onPokemonList = function (pokemonList) {
         this.config.pokemonMenuController.updatePokemonList(pokemonList);
         this.currentPokemonCount = pokemonList.Pokemons.length;
@@ -2218,6 +2190,8 @@ var InterfaceHandler = (function () {
         this.currentExp = playerStats.Experience;
         this.config.profileInfoController.setPlayerStats(playerStats);
         this.latestPlayerStats = playerStats;
+    };
+    InterfaceHandler.prototype.onSendGetConfigRequest = function (request) {
     };
     InterfaceHandler.prototype.onSendPokemonListRequest = function (request) {
         this.config.pokemonMenuController.pokemonListRequested(request);
@@ -38692,6 +38666,10 @@ var BotWSClient = (function () {
                 _this.profileSent = true;
                 _.each(_this.config.eventHandlers, function (eh) { return eh.onProfile(profile_1); });
             }
+            else if (_.includes(type, ".LogEvent,")) {
+                var logEvent_1 = message;
+                _.each(_this.config.eventHandlers, function (eh) { return eh.onLog(logEvent_1); });
+            }
             else if (_.includes(type, ".PlayerLevelUpEvent,")) {
                 var levelUpEvent_1 = message;
                 _.each(_this.config.eventHandlers, function (eh) { return eh.onPlayerLevelUp(levelUpEvent_1); });
@@ -38768,6 +38746,10 @@ var BotWSClient = (function () {
                 var pokemonTransfer_1 = message;
                 _.each(_this.config.eventHandlers, function (eh) { return eh.onPokemonTransfer(pokemonTransfer_1); });
             }
+            else if (_.includes(type, ".ConfigResponce,")) {
+                var configEvent_1 = message;
+                _.each(_this.config.eventHandlers, function (eh) { return eh.onGetConfig(configEvent_1); });
+            }
             else if (_.includes(type, ".PokemonListEvent,")) {
                 var originalList = message.PokemonList.$values;
                 var pokemonList_1 = {
@@ -38823,6 +38805,15 @@ var BotWSClient = (function () {
                 };
                 _.each(_this.config.eventHandlers, function (eh) { return eh.onInventoryList(inventoryList_2); });
             }
+            else if (_.includes(type, ".HumanWalkSnipeEvent")) {
+                var snipeEv = message;
+                if (snipeEv.Pokemons) {
+                    var snipesList_1 = {
+                        Pokemons: snipeEv.Pokemons.$values
+                    };
+                    _.each(_this.config.eventHandlers, function (eh) { return eh.onHumanSnipeList(snipesList_1); });
+                }
+            }
             else if (_.includes(type, ".PlayerStatsEvent,") || _.includes(type, ".TrainerProfileResponce,")) {
                 var originalStats = void 0;
                 if (_.includes(type, ".PlayerStatsEvent,")) {
@@ -38842,10 +38833,10 @@ var BotWSClient = (function () {
             else if (_.includes(type, ".HumanWalkSnipeEvent")) {
                 var snipeEv = message;
                 if (snipeEv.Pokemons) {
-                    var snipesList_1 = {
+                    var snipesList_2 = {
                         Pokemons: snipeEv.Pokemons.$values
                     };
-                    _.each(_this.config.eventHandlers, function (eh) { return eh.onHumanSnipeList(snipesList_1); });
+                    _.each(_this.config.eventHandlers, function (eh) { return eh.onHumanSnipeList(snipesList_2); });
                 }
                 switch (snipeEv.Type) {
                     case HumanWalkEventTypes.StartWalking:
@@ -38876,6 +38867,13 @@ var BotWSClient = (function () {
                         eh.onUnknownEvent(message);
                     }
                 });
+            }
+        };
+        this.sendGetConfigRequest = function () {
+            var necroRequest = { Command: "GetConfig" };
+            _.each(_this.config.eventHandlers, function (eh) { return eh.onSendGetConfigRequest(necroRequest); });
+            if (_this.currentBotFamily === BotFamily.Undetermined || _this.currentBotFamily === BotFamily.Necro) {
+                _this.sendRequest(necroRequest);
             }
         };
         this.sendPokemonListRequest = function () {
@@ -39671,6 +39669,9 @@ $(function () {
     };
     var useGoogleMap = settings.mapProvider === MapProvider.GMaps;
     var lMap = useGoogleMap ? new GoogleMap(mapConfig) : new LeafletMap(mapConfig);
+    var consoleController = new ConsoleController({
+        consoleElement: $("#console")
+    });
     var interfaceHandler = new InterfaceHandler({
         translationController: translationController,
         notificationControllers: [
@@ -39687,7 +39688,8 @@ $(function () {
         requestSender: client,
         map: lMap,
         settingsService: settingsService,
-        fortCacheService: fortCacheService
+        fortCacheService: fortCacheService,
+        consoleController: consoleController
     });
     client.start({
         eventHandlers: [interfaceHandler],

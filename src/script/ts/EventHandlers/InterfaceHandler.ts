@@ -25,6 +25,10 @@
         this.latestPlayerStats = null;
     }
 
+    public onLog(logEvent: ILogEvent): void {
+        this.config.consoleController.log(logEvent);
+    }
+
     public onPlayerLevelUp = (levelUp: IPlayerLevelUpEvent): void => {
         
     }
@@ -95,6 +99,7 @@
     public onProfile(profile: IProfileEvent): void {
         this.config.mainMenuController.updateProfileData(profile);
         this.config.profileInfoController.setProfileData(profile);
+        this.config.requestSender.sendGetConfigRequest();
         this.config.requestSender.sendPlayerStatsRequest();
         this.config.requestSender.sendGetPokemonSettingsRequest();
         this.config.requestSender.sendInventoryListRequest();
@@ -188,6 +193,10 @@
         this.config.mainMenuController.setPokemonCount(this.currentPokemonCount);
     }
 
+    public onGetConfig(configEvent: IConfigEvent): void {
+
+    }
+
     public onPokemonList(pokemonList: IPokemonListEvent): void {
         this.config.pokemonMenuController.updatePokemonList(pokemonList);
         this.currentPokemonCount = pokemonList.Pokemons.length;
@@ -216,6 +225,10 @@
         this.currentExp = playerStats.Experience;
         this.config.profileInfoController.setPlayerStats(playerStats);
         this.latestPlayerStats = playerStats;
+    }
+
+    public onSendGetConfigRequest(request: IRequest): void {
+
     }
 
     public onSendPokemonListRequest(request: IRequest): void {
@@ -277,4 +290,5 @@
     public onSettingsChanged = (settings: ISettings, previousSettings: ISettings):void => {
         this.config.map.config.followPlayer = settings.mapFolllowPlayer;
     }
+
 }

@@ -19,17 +19,24 @@ interface IEventHandler {
     onIncubatorStatus: (incubatorStatus: IIncubatorStatusEvent) => void;
     onItemRecycle: (itemRecycle: IItemRecycleEvent) => void;
     onPokemonTransfer: (pokemonTransfer: IPokemonTransferEvent) => void;
+<<<<<<< HEAD
     onSendRecycleRequest :(request: IRecycleRequest) => void;
+=======
+
     onGetConfig: (configEvent: IConfigEvent) => void;
+>>>>>>> master
     onPokemonList: (pokemonList: IPokemonListEvent) => void;
     onEggList: (eggList: IEggListEvent) => void;
     onInventoryList: (inventoryList: IInventoryListEvent) => void;
     onPlayerStats: (playerStats: IPlayerStatsEvent) => void;
     onHumanSnipeList: (pokemonList: IHumanWalkSnipeListEvent) => void;
+<<<<<<< HEAD
     onHumanSnipeStart : (snipeData: IHumanWalkSnipeStartEvent) => void;
     onHumanSnipeReachedDestination :(ev: IHumanWalkSnipeReachedEvent) => void;
+=======
 
     onSendGetConfigRequest: (request: IRequest) => void;
+>>>>>>> master
     onSendPokemonListRequest: (request: IRequest) => void;
     onSendEggsListRequest: (request: IRequest) => void;
     onSendInventoryListRequest: (request: IRequest) => void;

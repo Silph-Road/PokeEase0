@@ -21,6 +21,11 @@
         for (let i = 0; i < pokemons.length; i++) {
             const pokemon = pokemons[i] as ISnipePokemonInfo;
             const pokemonName = this.config.translationController.translation.pokemonNames[pokemon.Id];
+<<<<<<< HEAD
+            //const roundedIv = Math.floor(pokemon.Perfection * 100) / 100;
+=======
+            const distance  = Math.round(pokemon.Distance)
+>>>>>>> master
             const expired =Math.round( (new Date(pokemon.ExpiredTime).valueOf() - (new Date()).valueOf()) / 1000);
             const className = pokemon.IsCatching?"walking-to": (pokemon.Setting.Priority == 0?"targeted": "");
            
@@ -51,6 +56,7 @@
         $(ev.target).closest(".pokemon").fadeOut(500);
         this.config.requestSender.sendHumanSnipePokemonRemoveRequest(uniqueId);
     }
+      */
 
     public pokemonListRequested = (request: IRequest): void => {
         //this.config.pokemonLoadingSpinner.show();
