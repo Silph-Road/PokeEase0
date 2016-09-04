@@ -192,7 +192,7 @@ module.exports = function (grunt) {
                     },
                     {
                         dest: '.tmp/css/vendor.css',
-                        src: ['src/external/**/*.css']
+                        src: ['src/external/**/*.css','src/external/*/*.css']
                     }
                 ]
             }
