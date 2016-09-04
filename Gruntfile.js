@@ -1,4 +1,6 @@
-module.exports = function(grunt) {
+/// <reference path="src/external/jquery/dist/jquery.js" />
+/// <reference path="src/external/jquery/dist/jquery.js" />
+module.exports = function (grunt) {
     require('load-grunt-tasks')(grunt);
 
     grunt.initConfig({
@@ -7,7 +9,7 @@ module.exports = function(grunt) {
 
         ts: {
             default: {
-                src: ["typings/**/*.ts","src/script/**/*.ts", "!node_modules/**"],
+                src: ["typings/**/*.ts", "src/script/**/*.ts", "!node_modules/**"],
                 dest: "src/script/script.js"
             }
         },
@@ -24,7 +26,7 @@ module.exports = function(grunt) {
         },
         watch: {
             sass: {
-                files: ['**/*.scss','**/**/*.scss'],
+                files: ['**/*.scss', '**/**/*.scss'],
                 tasks: ['sass'],
                 options: {
                     spawn: false,
@@ -50,10 +52,10 @@ module.exports = function(grunt) {
                 options: {
                     namespace: function (filename) {
                         var names = filename.split('/')//filename.replace(/src\/script\/templates\/(.*)\/(.*)\.hbs/, '$1');
-                        names = names.slice(2, names.length-1)
-                        return "app."+ names.join('.');
+                        names = names.slice(2, names.length - 1)
+                        return "app." + names.join('.');
                     },
-                    processName: function(filename) { // input: templates/_header.hbs
+                    processName: function (filename) { // input: templates/_header.hbs
                         //return filename.replace(/src\/script\/templates\/(.*)\.hbs/, '$1')
                         var pieces = filename.split('/');
                         var name = pieces[pieces.length - 1];
@@ -63,6 +65,13 @@ module.exports = function(grunt) {
                 files: {
                     'src/script/template.js': ['src/script/**/*.hbs']
                 }
+            }
+        },
+        rename: {
+            jquery: {
+                files: [
+                    {src: ['path/to/[file or folder]'], dest: 'path/to/[file-renamed or folder-renamed]'},
+                ]
             }
         },
         htmlbuild: {
@@ -104,15 +113,15 @@ module.exports = function(grunt) {
             }
         },
         copy: {
-            html:{
+            html: {
                 files: [{
-                        //cwd: "src/",
-                        expand: true,
-                        flatten:true,
-                        src: ['src/*.html'],
-                        dest: 'public',
-                        filter: 'isFile'
-                    },
+                    //cwd: "src/",
+                    expand: true,
+                    flatten: true,
+                    src: ['src/*.html'],
+                    dest: 'public',
+                    filter: 'isFile'
+                },
                 ]
             },
             images: {
@@ -135,7 +144,7 @@ module.exports = function(grunt) {
                     // flattens results to a single level
                     //{expand: true, flatten: true, src: ['path/**'], dest: 'dest/', filter: 'isFile'},
                 ],
-            },
+            }
         },
         concat: {
             generated: {
@@ -145,15 +154,30 @@ module.exports = function(grunt) {
                     },
                     {
                         dest: '.tmp/script/vendor.js',
-                        src: ['src/external/*.js']
-                     },{
-                            dest: '.tmp/css/site.css',
-                            src: ['src/style/*.css']
-                     },
-                     {
-                            dest: '.tmp/css/vendor.css',
-                            src: ['src/external/*.css']
-                     }
+                        src: [
+                              'src/external/jquery/dist/jquery.js',
+                              'src/external/lodash.js',
+                              'src/external/localStoragePolyfill.js',
+                              'src/external/leaflet/dist/leaflet-src.js',
+                              'src/external/google-map-infobubble/src/infobubble.js',
+                              'src/external/jquery-animateNumber/jquery.animateNumber.js',
+                              'src/external/qtip2/dist/jquery.qtip.js',
+                              'src/external/moment/moment.js',
+                              'src/external/jquery-circle-progress/dist/circle-progress.js',
+                              'src/external/jquery.easing/js/jquery.easing.js',
+                              'src/external/handlebars/handlebars.js',
+                              'src/external/ion.rangeSlider/js/ion.rangeSlider.js',
+                              'src/external/jquery.easing.compatibility.js',
+                            ]
+                    },
+                    {
+                        dest: '.tmp/css/site.css',
+                        src: ['src/style/*.css']
+                    },
+                    {
+                        dest: '.tmp/css/vendor.css',
+                        src: ['src/external/**/*.css']
+                    }
                 ]
             }
         },
@@ -184,21 +208,21 @@ module.exports = function(grunt) {
             }
         },
         useminPrepare: {
-	      html: 'public/index.html',
-	      options: {
-	        dest: 'dist'
-	      }
-	  },
+            html: 'public/index.html',
+            options: {
+                dest: 'dist'
+            }
+        },
         usemin: {
-        html: 'public/index.html',
-      },
+            html: 'public/index.html',
+        },
         bower_main: {
-          copy: {
-              options: {
-                  dest: 'src/external'
-              }
-          }
-        } ,
+            copy: {
+                options: {
+                    dest: 'src/external'
+                }
+            }
+        },
         typings: {
             install: {
 
@@ -213,6 +237,9 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-sass');
     */
     grunt.registerTask('build', [
+        'ts',
+        'sass',
+        'handlebars',
         'bower_main',
         'copy:html',
         'copy:images',
@@ -223,6 +250,5 @@ module.exports = function(grunt) {
        // 'filerev',
         'usemin'
     ]);
-
     grunt.registerTask('default', ['bower_main', 'ts', 'sass', 'handlebars', 'watch']);
 };

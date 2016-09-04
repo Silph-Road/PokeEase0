@@ -8,6 +8,36 @@ var app = (function () {
     }
     return app;
 }());
+var ConsoleController = (function () {
+    function ConsoleController(config) {
+        var _this = this;
+        this.log = function (logEvent) {
+            var items = _this.config.consoleElement.find(".items");
+            var html = "<div class=\"event\">\n    <div class=\"item\" style=\"font-family:monospace; white-space: pre-wrap; color:" + logEvent.Color + "\">" + logEvent.Message + "</div>\n</div>";
+            var element = $(html);
+            var scroll = _this.isAtBottom(items);
+            items.append(element);
+            if (scroll) {
+                _this.scrollToBottom(items);
+            }
+        };
+        this.isAtBottom = function (container) {
+            var scrollTop = container.scrollTop();
+            var innerHeight = container.innerHeight();
+            var scrollHeight = container[0].scrollHeight;
+            var atBottom = scrollTop + innerHeight > scrollHeight - 200;
+            return atBottom;
+        };
+        this.config = config;
+    }
+    ConsoleController.prototype.scrollToBottom = function (container) {
+        container.finish().animate({
+            scrollTop: container.prop("scrollHeight") - container.height()
+        }, 100);
+    };
+    ;
+    return ConsoleController;
+}());
 var MainMenuController = (function () {
     function MainMenuController(config) {
         var _this = this;
