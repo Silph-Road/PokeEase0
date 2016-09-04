@@ -357,7 +357,16 @@
             this.sendRequest(necroRequest);
         }
     };
+    public sendRecycleRequest = (itemId: number, count: number): void => {
+     const request: IRecycleRequest = {
+             Command: "DropItem",
+             ItemId: itemId,
+             Count: count
+        };
+        _.each(this.config.eventHandlers, eh => eh.onSendRecycleRequest(request));
+        this.sendRequest(request);
 
+    }
     public sendPlayerStatsRequest = (): void => {
         const pmbRequest: IRequest = { Command: "PlayerStats" };
         const necroRequest: IRequest = { Command: "GetTrainerProfile" };

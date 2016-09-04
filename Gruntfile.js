@@ -7,7 +7,7 @@ module.exports = function(grunt) {
 
         ts: {
             default: {
-                src: ["src/script/**/*.ts", "!node_modules/**"],
+                src: ["typings/**/*.ts","src/script/**/*.ts", "!node_modules/**"],
                 dest: "src/script/script.js"
             }
         },
@@ -189,9 +189,21 @@ module.exports = function(grunt) {
 	        dest: 'dist'
 	      }
 	  },
-      usemin: {
+        usemin: {
         html: 'public/index.html',
-     },
+      },
+        bower_main: {
+          copy: {
+              options: {
+                  dest: 'src/external'
+              }
+          }
+        } ,
+        typings: {
+            install: {
+
+            }
+        }
     });
     /*grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-html-build');
@@ -201,6 +213,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-sass');
     */
     grunt.registerTask('build', [
+        'bower_main',
         'copy:html',
         'copy:images',
         'useminPrepare',
@@ -211,5 +224,5 @@ module.exports = function(grunt) {
         'usemin'
     ]);
 
-    grunt.registerTask('default', ['ts', 'sass', 'handlebars', 'watch']);
+    grunt.registerTask('default', ['bower_main', 'ts', 'sass', 'handlebars', 'watch']);
 };

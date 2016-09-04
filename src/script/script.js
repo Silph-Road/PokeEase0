@@ -1074,13 +1074,60 @@ var InventoryMenuController = (function () {
             var currentItems = _this.config.inventoryMenuElement.find(".product");
             currentItems.removeClass("brighter");
             currentItems.find(".number").text(0);
-            for (var i = 0; i < inventoryList.Items.length; i++) {
+            currentItems.find(".slider input:first").ionRangeSlider({
+                min: 0,
+                max: 0,
+                from: 0 });
+            var _loop_1 = function(i) {
                 var item = inventoryList.Items[i];
                 var itemElement = _this.config.inventoryMenuElement.find(".product[data-item-id=\"" + item.ItemId + "\"]");
                 itemElement.addClass("brighter");
+                itemElement.data("total", item.Count);
                 itemElement.find(".number").text(item.Count);
+                slider = itemElement.find(".slider input:first").data("ionRangeSlider");
+                if (slider) {
+                    slider.update({
+                        min: 0,
+                        max: item.Count,
+                        from: item.Count,
+                        onChange: function (data) {
+                            var numberOfDelete = item.Count - data.from;
+                            itemElement.find(".delete").text(numberOfDelete);
+                            itemElement.find(".recycle").css('opacity', numberOfDelete > 0 ? 1 : 0.3)
+                                .data('items', numberOfDelete)
+                                .data('itemId', itemElement.attr('data-item-id'));
+                        }
+                    });
+                }
+                itemElement.find(".recycle").unbind('click').click(_this.recycleItems);
+            };
+            var slider;
+            for (var i = 0; i < inventoryList.Items.length; i++) {
+                _loop_1(i);
             }
             _this.config.inventoryLoadingSpinner.fadeOut(150);
+        };
+        this.recycleItems = function (ev) {
+            var deleteItems = $(ev.target).data().items;
+            var itemId = $(ev.target).data().itemId;
+            var itemElement = $(ev.target).closest('.product');
+            var total = itemElement.data().total;
+            if (deleteItems > 0) {
+                _this.config.requestSender.sendRecycleRequest(itemId, deleteItems);
+                $(ev.target).data('items', 0);
+                itemElement.find(".delete").text(0);
+                itemElement.find(".number").text(total - deleteItems);
+                itemElement.data('total', total - deleteItems);
+                itemElement.find(".recycle").css('opacity', 0.3);
+                var slider = itemElement.find(".slider input:first").data("ionRangeSlider");
+                if (slider) {
+                    slider.update({
+                        min: 0,
+                        max: total - deleteItems,
+                        from: total - deleteItems,
+                    });
+                }
+            }
         };
         this.config = config;
     }
@@ -2034,6 +2081,8 @@ var InterfaceHandler = (function () {
                 _this.currentPokemonCount++;
                 _this.config.mainMenuController.setPokemonCount(_this.currentPokemonCount);
             }
+        };
+        this.onSendRecycleRequest = function (request) {
         };
         this.onSettingsChanged = function (settings, previousSettings) {
             _this.config.map.config.followPlayer = settings.mapFolllowPlayer;
@@ -38286,7 +38335,7 @@ var StaticData = (function () {
         }
         StaticData.moveData = [];
         var moveData = _.filter(rawData.itemTemplates, function (x) { return x.moveSettings; });
-        var _loop_1 = function(i) {
+        var _loop_2 = function(i) {
             var moveSettings = moveData[i].moveSettings;
             moveSettings.id = StaticData.parseId(moveData[i].templateId);
             moveSettings.element = StaticData.dictRawPokemonTypeToEasePokemonType[moveSettings.pokemonType];
@@ -38307,7 +38356,7 @@ var StaticData = (function () {
             StaticData.moveData[moveSettings.id] = moveSettings;
         };
         for (var i = 0; i < moveData.length; i++) {
-            _loop_1(i);
+            _loop_2(i);
         }
         for (var i = 1; i < StaticData.pokemonData.length; i++) {
             var pokemonSettings = StaticData.pokemonData[i];
@@ -38831,6 +38880,15 @@ var BotWSClient = (function () {
             if (_this.currentBotFamily === BotFamily.Undetermined || _this.currentBotFamily === BotFamily.Necro) {
                 _this.sendRequest(necroRequest);
             }
+        };
+        this.sendRecycleRequest = function (itemId, count) {
+            var request = {
+                Command: "DropItem",
+                ItemId: itemId,
+                Count: count
+            };
+            _.each(_this.config.eventHandlers, function (eh) { return eh.onSendRecycleRequest(request); });
+            _this.sendRequest(request);
         };
         this.sendPlayerStatsRequest = function () {
             var pmbRequest = { Command: "PlayerStats" };

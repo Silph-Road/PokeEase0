@@ -1160,14 +1160,28 @@ body {
         text-transform: uppercase;
         color: rgba(0, 0, 0, 0.8);
         font-size: 14px; }
-    .content[data-category="items"] .product .number {
+    .content[data-category="items"] .product .product-extras {
       display: table-cell;
-      vertical-align: middle;
-      font-size: 28px;
-      font-weight: 300;
-      width: 30%;
-      text-align: right;
-      padding-right: 5%; }
+      width: 70%;
+      padding-right: 25px; }
+      .content[data-category="items"] .product .product-extras .slider {
+        float: left;
+        width: 75%; }
+      .content[data-category="items"] .product .product-extras .number-wrapper {
+        vertical-align: middle;
+        font-size: 28px;
+        font-weight: 300;
+        text-align: right;
+        float: right;
+        width: 25%; }
+        .content[data-category="items"] .product .product-extras .number-wrapper .delete {
+          color: #ff0000; }
+        .content[data-category="items"] .product .product-extras .number-wrapper .recycle {
+          background: url("../images/recycle.svg");
+          width: 20px;
+          height: 20px;
+          display: inline-block;
+          background-size: cover; }
   .content[data-category="items"] .product.brighter {
     background: rgba(255, 255, 255, 0.35); }
   .content[data-category="items"] .product + .product {

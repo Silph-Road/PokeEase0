@@ -8,6 +8,7 @@ interface IRequestSender {
     sendEvolvePokemonRequest(pokemonId: string);
     sendHumanSnipPokemonRemoveRequest(pokemonId: string);
     sendHumanSnipPokemonSnipeRequest(pokemonId: string);
-    sendHumanSnipPokemonListUpdateRequest()
+    sendHumanSnipPokemonListUpdateRequest();
+    sendRecycleRequest (itemId: number, count: number);
     currentBotFamily: BotFamily;
 }
