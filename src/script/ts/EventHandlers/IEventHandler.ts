@@ -39,7 +39,7 @@ interface IEventHandler {
     onSendEvolvePokemonRequest: (request: IRequest) => void;
     onSendHumanSnipePokemonRequest: (request: IRequest) => void;
     onSendHumanSnipPokemonListUpdateRequest: (request:IRequest) => void;
-    onSendHumanSnipePokemonRemoveRequest : (request:IRequest) => void;
+    onSendHumanSnipePokemonRemoveRequest: (request: IRequest) => void;
 
     onUnknownEvent?: (message: any) => void;
 }

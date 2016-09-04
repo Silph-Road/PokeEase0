@@ -23,8 +23,8 @@ interface IEventHandler {
     onSendRecycleRequest :(request: IRecycleRequest) => void;
 =======
 
+>>>>>>> 1ede9e944ab7fecf5755a950ac4d60fc0e7cd743
     onGetConfig: (configEvent: IConfigEvent) => void;
->>>>>>> master
     onPokemonList: (pokemonList: IPokemonListEvent) => void;
     onEggList: (eggList: IEggListEvent) => void;
     onInventoryList: (inventoryList: IInventoryListEvent) => void;
@@ -34,9 +34,9 @@ interface IEventHandler {
     onHumanSnipeStart : (snipeData: IHumanWalkSnipeStartEvent) => void;
     onHumanSnipeReachedDestination :(ev: IHumanWalkSnipeReachedEvent) => void;
 =======
+>>>>>>> 1ede9e944ab7fecf5755a950ac4d60fc0e7cd743
 
     onSendGetConfigRequest: (request: IRequest) => void;
->>>>>>> master
     onSendPokemonListRequest: (request: IRequest) => void;
     onSendEggsListRequest: (request: IRequest) => void;
     onSendInventoryListRequest: (request: IRequest) => void;
@@ -46,7 +46,11 @@ interface IEventHandler {
     onSendEvolvePokemonRequest: (request: IRequest) => void;
     onSendHumanSnipePokemonRequest: (request: IRequest) => void;
     onSendHumanSnipPokemonListUpdateRequest: (request:IRequest) => void;
+<<<<<<< HEAD
     onSendHumanSnipePokemonRemoveRequest : (request:IRequest) => void;
+=======
+    onSendHumanSnipePokemonRemoveRequest: (request: IRequest) => void;
+>>>>>>> 1ede9e944ab7fecf5755a950ac4d60fc0e7cd743
 
     onUnknownEvent?: (message: any) => void;
 }

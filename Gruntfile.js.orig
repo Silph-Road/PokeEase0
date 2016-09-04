@@ -66,7 +66,6 @@ module.exports = function (grunt) {
                     'src/script/template.js': ['src/script/**/*.hbs']
                 }
             }
-<<<<<<< HEAD
         },
         rename: {
             jquery: {
@@ -224,15 +223,12 @@ module.exports = function (grunt) {
                 }
             }
         },
+<<<<<<< HEAD
         typings: {
             install: {
 
             }
         }
-=======
-            }
-        },
->>>>>>> master
     });
     /*grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-html-build');
@@ -240,7 +236,6 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-ts');
     grunt.loadNpmTasks('grunt-sass');
-<<<<<<< HEAD
     */
     grunt.registerTask('build', [
         'ts',
@@ -259,6 +254,27 @@ module.exports = function (grunt) {
     grunt.registerTask('default', ['bower_main', 'ts', 'sass', 'handlebars', 'watch']);
 };
 =======
+        watch: {
+            sass: {
+                files: ['**/*.scss'],
+                tasks: ['sass'],
+                options: {
+                spawn: false,
+                },
+            },
+            ts: {
+                 files: ['**/*.ts','**/**/*.ts','**/**/**/*.ts','**/**/**/**/*.ts'],
+                    tasks: ['ts'],
+                    options: {
+                    spawn: false,
+                },
+            }
+        },
+    });
+
+    grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-ts');
+    grunt.loadNpmTasks('grunt-sass');
     grunt.registerTask('default', ['ts', 'sass','watch']);
 };
->>>>>>> master
+>>>>>>> 1ede9e944ab7fecf5755a950ac4d60fc0e7cd743

@@ -7,15 +7,12 @@ interface IRequestSender {
     sendGetPokemonSettingsRequest();
     sendTransferPokemonRequest(pokemonId: string);
     sendEvolvePokemonRequest(pokemonId: string);
-<<<<<<< HEAD
-    sendHumanSnipPokemonRemoveRequest(pokemonId: string);
-    sendHumanSnipPokemonSnipeRequest(pokemonId: string);
-    sendHumanSnipPokemonListUpdateRequest();
-    sendRecycleRequest (itemId: number, count: number);
-=======
     sendHumanSnipePokemonRemoveRequest(pokemonId: string);
     sendHumanSnipePokemonSnipeRequest(pokemonId: string);
     sendHumanSnipPokemonListUpdateRequest();
->>>>>>> master
+<<<<<<< HEAD
+    sendRecycleRequest (itemId: number, count: number);
+=======
+>>>>>>> 1ede9e944ab7fecf5755a950ac4d60fc0e7cd743
     currentBotFamily: BotFamily;
 }

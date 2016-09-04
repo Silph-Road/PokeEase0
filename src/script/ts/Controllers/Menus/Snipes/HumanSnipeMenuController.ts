@@ -6,11 +6,6 @@
 
     constructor(config: IHumanSnipeMenuControllerConfig) {
         this.config = config;
-        //this.config.pokemonDetailsElement.find("#confirm-transfer").click(this.transferPokemon);
-        //this.config.pokemonDetailsElement.find("#confirm-evolve").click(this.evolvePokemon);
-        //this.currentOrdering = PokemonOrdering.Date;
-        //this.currentReverse = true;
-        //this.config.pokemonOrderButtons.click(this.onOrderButtonClicked);
     }
     private updatePokemonListInner = (): void => {
         if (!this.pokemonList) {

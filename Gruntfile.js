@@ -65,6 +65,21 @@ module.exports = function (grunt) {
                 files: {
                     'src/script/template.js': ['src/script/**/*.hbs']
                 }
+        },
+        watch: {
+            sass: {
+                files: ['**/*.scss'],
+                tasks: ['sass'],
+                options: {
+                spawn: false,
+                },
+            },
+            ts: {
+                 files: ['**/*.ts','**/**/*.ts','**/**/**/*.ts','**/**/**/**/*.ts'],
+                    tasks: ['ts'],
+                    options: {
+                    spawn: false,
+                },
             }
         },
         rename: {
