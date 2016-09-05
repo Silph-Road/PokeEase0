@@ -399,6 +399,7 @@ class GoogleMap implements IMap {
             });
             popupInfoWIndow.open(this.map, this.clickedMarker);
             $('#current-position-move').click(function () {
+                console.log(current)
                 current.sendMoveToRequest(lat, lng)
                 //change icon or do what ever ui change for indicated target.....
             })
@@ -407,7 +408,7 @@ class GoogleMap implements IMap {
 
 
     }
-    public sendMoveToRequest = (lat: number, lng: number) : void {
+    public sendMoveToRequest = (lat: number, lng: number) : void => {
         this.config.requestSender.sendMoveToRequest(lat, lng, false);
     }
     public movePlayer = (position: IUpdatePositionEvent): void => {
