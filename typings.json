@@ -7,9 +7,7 @@
     "jquery": "https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/master/jquery/jquery.d.ts",
     "leaflet": "https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/master/leaflet/leaflet.d.ts",
     "lodash": "https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/master/lodash/lodash.d.ts",
-    "moment": "https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/master/moment/moment.d.ts"
-  },
-  "dependencies": {
-    "es6-promise": "registry:npm/es6-promise#3.0.0+20160723033700"
+    "moment": "https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/master/moment/moment.d.ts",
+	"es6-promise" : "https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/master/es6-promise/es6-promise.d.ts"
   }
 }

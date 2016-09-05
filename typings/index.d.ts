@@ -7,4 +7,3 @@
 /// <reference path="globals/leaflet/index.d.ts" />
 /// <reference path="globals/lodash/index.d.ts" />
 /// <reference path="globals/moment/index.d.ts" />
-/// <reference path="modules/es6-promise/index.d.ts" />
