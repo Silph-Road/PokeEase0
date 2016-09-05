@@ -267,6 +267,30 @@
                 }
                 _.each(this.config.eventHandlers, eh => eh.onHumanSnipeList(snipesList));
             }
+            switch (snipeEv.Type) {
+                case HumanWalkEventTypes.StartWalking:
+                    const snipeStartEV: IHumanWalkSnipeStartEvent = {
+                        Latitude: snipeEv.Latitude,
+                        Longitude: snipeEv.Longitude,
+                        PokemonId: snipeEv.PokemonId,
+                        Timestamp: snipeEv.Timestamp,
+                        Distance: snipeEv.Distance,
+                        Estimated: snipeEv.Estimate,
+                        Rarity: snipeEv.Rarity
+                    }
+                    _.each(this.config.eventHandlers, eh => eh.onHumanSnipeStart(snipeStartEV));
+                    break;
+
+                case HumanWalkEventTypes.DestinationReached:
+                    let reachedEV: IHumanWalkSnipeReachedEvent = {
+                        UniqueId: snipeEv.UniqueId,
+                        PauseDuration: snipeEv.PauseDuration,
+                        Timestamp: snipeEv.Timestamp
+                    };
+                    _.each(this.config.eventHandlers, eh => eh.onHumanSnipeReachedDestination(reachedEV))
+                    break;
+            }
+
         } else if (_.includes(type, ".PlayerStatsEvent,") || _.includes(type, ".TrainerProfileResponce,")) {
             let originalStats: any;
             if (_.includes(type, ".PlayerStatsEvent,")) {
