@@ -1,4 +1,6 @@
-interface Window {
+/// <reference path="../../../../../typings/index.d.ts" />
+interface Window 
+{
     setIwStyles();
 }
 
@@ -20,6 +22,7 @@ class GoogleMap implements IMap {
 
     private map: google.maps.Map;
     private playerMarker: google.maps.Marker;
+    private clickedMarker: google.maps.Marker;
     private locationHistory: Array<any> = [];
     private locationLine: google.maps.Polyline;
     private snipePath : google.maps.Polyline;
@@ -28,7 +31,7 @@ class GoogleMap implements IMap {
     private gyms: { [id: string]: IGoogleMapGymInfo } = {};
     private capMarkers: Array<CaptureMarker> = [];
     private snipeMarker :SnipeMarker;
-
+    
     constructor(config: IMapConfig) {
         this.config = config;
 
@@ -361,6 +364,7 @@ class GoogleMap implements IMap {
             },
             zIndex: 300000
         });
+        this.map.addListener('click', this.onMapClick);
 
         /*setTimeout(() => {
             console.log("setting new map style");
@@ -369,7 +373,43 @@ class GoogleMap implements IMap {
         }, 10000);*/
 
     }
+    public onMapClick = (ev:any): void => {
+        if (this.clickedMarker) {
+            this.clickedMarker.setMap(null)
+            //remove current marker
+        }
+        const lat = ev.latLng.lat();
+        const lng = ev.latLng.lng();
+        this.clickedMarker = new google.maps.Marker({
+            map: this.map,
+            position: ev.latLng,
+            icon: {
+                url: "images/markers/location.png",
+                scaledSize: new google.maps.Size(50, 55),
+                anchor: new google.maps.Point(25, 45)
+            },
+            zIndex: 300000
+        });
+        const current = this;
+        this.clickedMarker.addListener("click", () => {
+            const popupInfoWIndow = new google.maps.InfoWindow({
+                content: app.templates.SelectedPostionPopup({
+                    Latitude: lat, Longitude: lng
+                })
+            });
+            popupInfoWIndow.open(this.map, this.clickedMarker);
+            $('#current-position-move').click(function () {
+                this.sendMoveToRequest(lat, lng)
+                //change icon or do what ever ui change for indicated target.....
+            })
+            window.setIwStyles();
+        });
 
+
+    }
+    public sendMoveToRequest(lat: number, lng: number) {
+        this.config.requestSender.sendMoveToRequest(lat, lng, false);
+    }
     public movePlayer = (position: IUpdatePositionEvent): void => {
         const posArr = [position.Latitude, position.Longitude];
         const pos = new google.maps.LatLng(posArr[0], posArr[1]);

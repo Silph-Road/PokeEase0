@@ -8,4 +8,5 @@
     onPokemonCapture: (pokemonCapture: IPokemonCaptureEvent) => void;
     onSnipePokemonStart: (snipePokemon: IHumanWalkSnipeStartEvent) => void;
     onHumanSnipeReachedDestination: (ev: IHumanWalkSnipeReachedEvent) => void;
+    onMapClick : (ev:any) => void;
 }

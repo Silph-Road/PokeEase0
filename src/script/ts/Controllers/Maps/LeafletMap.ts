@@ -76,6 +76,10 @@
         });
     }
 
+    public onMapClick = (ev:any): void => {
+        alert('click on the map.....')
+    }
+
     public movePlayer = (position: IUpdatePositionEvent): void => {
         const posArr = [position.Latitude, position.Longitude];
         this.playerMarker.setLatLng(posArr);

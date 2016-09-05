@@ -89,7 +89,8 @@ $(() => {
         followPlayer: settings.mapFolllowPlayer,
         translationController: translationController,
         mapElement: $("#map"),
-        infoWindowTemplate: $("#iw-template")
+        infoWindowTemplate: $("#iw-template"),
+        requestSender: client
     };
 
     const useGoogleMap = settings.mapProvider === MapProvider.GMaps;

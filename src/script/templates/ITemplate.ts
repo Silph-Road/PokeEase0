@@ -12,6 +12,7 @@ interface ITemplate{
     PokemonInfoPopup(data: IPokemonInfoPopupData):string;
     SnipePokemonItem(data:ISnipePokemonItemData) :string;
     SnipePokemonMarker(data:ISnipePokemonMarkerData) :string;
-    PokemonSnipeInfoPopup(data:IPokemonSnipeInfoPopupData) :string;
+    PokemonSnipeInfoPopup(data: IPokemonSnipeInfoPopupData): string;
+    SelectedPostionPopup(data: ISelectedPostionPopup): string;
     Notifications:ITemplateNotification
 }

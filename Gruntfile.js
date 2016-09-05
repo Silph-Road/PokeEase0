@@ -40,7 +40,7 @@ module.exports = function (grunt) {
                 },
             },
             handlebars: {
-                files: ['src/script/**/*.hbs'],
+                files: ['**/*.hbs'],
                 tasks: ['handlebars'],
                 options: {
                     spawn: false,
