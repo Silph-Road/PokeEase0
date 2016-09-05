@@ -244,6 +244,9 @@ module.exports = function (grunt) {
         usemin: {
             html: 'public/index.html',
         },
+        typings: {
+            install: {}
+          }
     });
     /*grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-html-build');
@@ -253,6 +256,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-sass');
     */
     grunt.registerTask('build', [
+        'typings',
         'ts',
         'sass',
         'handlebars',

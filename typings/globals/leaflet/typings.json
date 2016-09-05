@@ -1,0 +1,8 @@
+{
+  "resolution": "main",
+  "tree": {
+    "src": "https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/master/leaflet/leaflet.d.ts",
+    "raw": "https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/master/leaflet/leaflet.d.ts",
+    "typings": "https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/master/leaflet/leaflet.d.ts"
+  }
+}
