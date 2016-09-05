@@ -13,6 +13,8 @@
 public/
 src/script/script.js
 src/script/script.js.map
+src/script/template.js
+src/script/template.js.map
 
 # Build results
 [Dd]ebug/
