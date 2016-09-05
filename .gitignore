@@ -15,7 +15,8 @@ src/script/script.js
 src/script/script.js.map
 src/script/template.js
 src/script/template.js.map
-
+src/style/style.css
+src/style/style.css.map
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/

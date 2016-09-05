@@ -83,51 +83,6 @@ module.exports = function (grunt) {
                 },
             }
         },
-        rename: {
-            jquery: {
-                files: [
-                    { src: ['path/to/[file or folder]'], dest: 'path/to/[file-renamed or folder-renamed]' },
-                ]
-            }
-        },
-        htmlbuild: {
-            dist: {
-                src: 'src/*.html',
-                dest: 'public/',
-                options: {
-                    beautify: true,
-                    prefix: '//some-cdn',
-                    relative: true,
-                    scripts: {
-                        bundle: [
-                            'public/scripts/*.js',
-                            '!**/main.js',
-                        ],
-                        main: '<%= buildPath %>/scripts/main.js'
-                    },
-                    styles: {
-                        bundle: [
-                            '<%= buildPath %>/css/libs.css',
-                            '<%= buildPath %>/css/dev.css'
-                        ],
-                        test: '<%= buildPath %>/css/inline.css'
-                    },
-                    sections: {
-                        views: '<%= buildPath %>/views/**/*.html',
-                        templates: '<%= buildPath %>/templates/**/*.html',
-                        layout: {
-                            header: '<%= buildPath %>/layout/header.html',
-                            footer: '<%= buildPath %>/layout/footer.html'
-                        }
-                    },
-                    data: {
-                        // Data to pass to templates
-                        version: "0.1.0",
-                        title: "test",
-                    },
-                }
-            }
-        },
         copy: {
             html: {
                 files: [{
@@ -158,7 +113,7 @@ module.exports = function (grunt) {
                     //{expand: true, cwd: 'path/', src: ['**'], dest: 'dest/'},
 
                     // flattens results to a single level
-                    //{expand: true, flatten: true, src: ['path/**'], dest: 'dest/', filter: 'isFile'},
+                    { expand: true, flatten: true, src: ['src/external/ion.rangeSlider/img/*'], dest: '<%= buildPath %>/images/', filter: 'isFile' },
                 ],
             }
         },
