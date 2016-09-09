@@ -265,10 +265,14 @@ paket-files/
 .tmp/
 
 node_modules/
+<<<<<<< HEAD
 bower_components/
+.tscache
+=======
 /typings/
 .tscache
 /src/script/script.js
 /src/script/script.js.map
 /src/style/style.css
 /src/style/style.css.map
+>>>>>>> a3088439a473df0edc59dc6e9d33625752dc336f
