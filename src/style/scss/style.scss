@@ -134,15 +134,20 @@ $lure: #f52d60;
     background-image: url("../images/eggs.png");
 }
 
+#menu .item#snipes {
+    background-color: #B01E00;
+    background-image: url("../images/target-white.svg");
+    background-size: cover;
+}
+
 #menu .item#settings {
     background-color: $toggle-color;
     background-image: url("../images/settings.png");
 }
 
-#menu .item#snipes {
-    background-color: #B01E00;
-    background-image: url("../images/target-white.svg");
-    background-size: cover;
+#menu .item#bot-config {
+    background-color: darken($toggle-color, 30%);
+    background-image: url("../images/settings.png");
 }
 
 #menu .close-button {
@@ -302,6 +307,10 @@ $lure: #f52d60;
 
 #popup .inner-wrap .content {
     padding: 10px;
+    &.bot-config-popup{
+        padding: 0px;
+        text-align: left;
+    }
 }
 
 /* console */
@@ -1619,6 +1628,7 @@ $event-incubator-status-color: #e9e1b5;
                 text-align: right;
                 float:right;
                 width:25%;
+                color : #000;
                 .delete{
                     color:#ff0000;
                 }

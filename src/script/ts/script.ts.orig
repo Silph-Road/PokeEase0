@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 ﻿/// <reference path="../../../typings/index.d.ts" />
 
+=======
+﻿/// <reference path="../../../typings/index.d.ts"/>
+>>>>>>> a3088439a473df0edc59dc6e9d33625752dc336f
 
 $(() => {
     StaticData.init(rawData);

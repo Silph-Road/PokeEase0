@@ -202,7 +202,8 @@
         //#region Request response events
 
         else if (_.includes(type, ".ConfigResponce,")) {
-            const configEvent = message as IConfigEvent;
+            const configEvent = message.Data as IConfigEvent;
+            configEvent.Timestamp = timestamp;
             _.each(this.config.eventHandlers, eh => eh.onGetConfig(configEvent));
         }
 
@@ -451,7 +452,15 @@
         const requestStr = JSON.stringify(request);
         this.webSocket.send(requestStr);
     }
-	
+
+    public sendPokemonSnipeListUpdateRequest = (): void => {
+        const necroRequest: IRequest = { Command: "PokemonSnipeList" };
+        _.each(this.config.eventHandlers, eh => eh.onSendHumanSnipPokemonListUpdateRequest(necroRequest));
+
+        if (this.currentBotFamily === BotFamily.Undetermined || this.currentBotFamily === BotFamily.Necro) {
+            this.sendRequest(necroRequest);
+        }
+    }
     public sendHumanSnipePokemonRemoveRequest = (pokemonId: string): void => {
         const request: IRequest = {
              Command: "RemovePokemon",

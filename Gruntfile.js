@@ -7,7 +7,7 @@ module.exports = function (grunt) {
         buildPath: 'public',
         pkg: grunt.file.readJSON('package.json'),
 
-        ts: {
+         ts: {
             default: {
                 src: ["typings/**/*.ts", "src/script/**/*.ts", "!node_modules/**"],
                 dest: "src/script/script.js"
@@ -24,6 +24,7 @@ module.exports = function (grunt) {
                 }
             }
         },
+
         watch: {
             sass: {
                 files: ['**/*.scss', '**/**/*.scss'],
@@ -67,22 +68,21 @@ module.exports = function (grunt) {
                 }
             }
         },
-        watch: {
-            sass: {
-                files: ['**/*.scss'],
-                tasks: ['sass'],
+        inline: {
+            dist: {
                 options: {
-                    spawn: false,
+                    inlineTagAttributes: {
+                        js: 'data-inlined="true"',
+                        css: 'data-inlined="true"'
+                    },
+                    uglify: true,
+                    cssmin: true,
                 },
-            },
-            ts: {
-                files: ['**/*.ts', '**/**/*.ts', '**/**/**/*.ts', '**/**/**/**/*.ts'],
-                tasks: ['ts'],
-                options: {
-                    spawn: false,
-                },
+                src: "src/index.html",
+                dest: "src/PokeEase.html"
             }
         },
+
         copy: {
             html: {
                 files: [{
@@ -119,36 +119,44 @@ module.exports = function (grunt) {
         },
         concat: {
             generated: {
-                files: [{
+                files: [
+                {
                     dest: '.tmp/script/app.js',
                     src: ['src/script/*.js']
                 },
-                    {
-                        dest: '.tmp/script/vendor.js',
-                        src: [
-                              'src/external/jquery/dist/jquery.js',
-                              'src/external/lodash.js',
-                              'src/external/localStoragePolyfill.js',
-                              'src/external/leaflet/dist/leaflet-src.js',
-                              'src/external/google-map-infobubble/src/infobubble.js',
-                              'src/external/jquery-animateNumber/jquery.animateNumber.js',
-                              'src/external/qtip2/dist/jquery.qtip.js',
-                              'src/external/moment/moment.js',
-                              'src/external/jquery-circle-progress/dist/circle-progress.js',
-                              'src/external/jquery.easing/js/jquery.easing.js',
-                              'src/external/handlebars/handlebars.js',
-                              'src/external/ion.rangeSlider/js/ion.rangeSlider.js',
-                              'src/external/jquery.easing.compatibility.js',
-                        ]
-                    },
-                    {
-                        dest: '.tmp/css/site.css',
-                        src: ['src/style/*.css']
-                    },
-                    {
-                        dest: '.tmp/css/vendor.css',
-                        src: ['src/external/**/*.css','src/external/*/*.css']
-                    }
+                {
+                    dest: '.tmp/script/vendor.js',
+                    src: [
+                          'bower_components/jquery/dist/jquery.js',
+                          'bower_components/lodash/dist/lodash.js',
+                          'src/external/localStoragePolyfill.js',
+                          'bower_components/leaflet/dist/leaflet-src.js',
+                          'bower_components/google-map-infobubble/src/infobubble.js',
+                          'bower_components/jquery-animateNumber/jquery.animateNumber.js',
+                          'bower_components/qtip2/dist/jquery.qtip.js',
+                          'bower_components/moment/moment.js',
+                          'bower_components/jquery-circle-progress/dist/circle-progress.min.js',
+                          'bower_components/jquery.easing/js/jquery.easing.js',
+                          'bower_components/handlebars/handlebars.js',
+                          'bower_components/ion.rangeSlider/js/ion.rangeSlider.js',
+                          'bower_components/jquery.easing/js/jquery.easing.compatibility.js',
+                          'bower_components/jsoneditor/dist/jsoneditor.js'
+                    ]
+                },
+                {
+                    dest: '.tmp/css/site.css',
+                    src: ['src/style/*.css']
+                },
+                {
+                    dest: '.tmp/css/vendor.css',
+                    src: [
+                            'bower_components/leaflet/dist/leaflet.css',
+                            'bower_components/qtip2/dist/jquery.qtip.css',
+                            'bower_components/ion.rangeSlider/css/ion.rangeSlider.css',
+                            'bower_components/ion.rangeSlider/css/ion.rangeSlider.skinFlat.css',
+                            'bower_components/jsoneditor/dist/jsoneditor.css'
+                    ]
+                }
                 ]
             }
         },
@@ -198,24 +206,15 @@ module.exports = function (grunt) {
         },
         usemin: {
             html: 'public/index.html',
-        },
-        typings: {
-            install: {}
-          }
+        }
     });
-    /*grunt.loadNpmTasks('grunt-contrib-copy');
-    grunt.loadNpmTasks('grunt-contrib-html-build');
-    grunt.loadNpmTasks('grunt-contrib-handlebars');
-    grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.loadNpmTasks('grunt-ts');
-    grunt.loadNpmTasks('grunt-sass');
-    */
+   
     grunt.registerTask('build', [
         'typings',
         'ts',
         'sass',
         'handlebars',
-        'bower_main',
+        //'bower_main',
         'copy:html',
         'copy:images',
         'useminPrepare',

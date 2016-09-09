@@ -4,8 +4,12 @@ module.exports = function (grunt) {
     require('load-grunt-tasks')(grunt);
 
     grunt.initConfig({
+<<<<<<< HEAD
         buildPath: 'public',
         pkg: grunt.file.readJSON('package.json'),
+=======
+        pkg: grunt.file.readJSON("package.json"),
+>>>>>>> a3088439a473df0edc59dc6e9d33625752dc336f
 
         ts: {
             default: {
@@ -20,6 +24,7 @@ module.exports = function (grunt) {
             },
             dist: {
                 files: {
+<<<<<<< HEAD
                     'src/style/style.css': 'src/style/scss/style.scss'
                 }
             }
@@ -40,7 +45,7 @@ module.exports = function (grunt) {
                 },
             },
             handlebars: {
-                files: ['src/script/**/*.hbs'],
+                files: ['**/*.hbs'],
                 tasks: ['handlebars'],
                 options: {
                     spawn: false,
@@ -64,52 +69,48 @@ module.exports = function (grunt) {
                 },
                 files: {
                     'src/script/template.js': ['src/script/**/*.hbs']
+=======
+                    'src/style/style.css': "src/style/style.scss"
+>>>>>>> a3088439a473df0edc59dc6e9d33625752dc336f
                 }
             }
         },
-        rename: {
-            jquery: {
-                files: [
-                    {src: ['path/to/[file or folder]'], dest: 'path/to/[file-renamed or folder-renamed]'},
-                ]
-            }
-        },
-        htmlbuild: {
+        
+        inline: {
             dist: {
-                src: 'src/*.html',
-                dest: 'public/',
                 options: {
-                    beautify: true,
-                    prefix: '//some-cdn',
-                    relative: true,
-                    scripts: {
-                        bundle: [
-                            'public/scripts/*.js',
-                            '!**/main.js',
-                        ],
-                        main: '<%= buildPath %>/scripts/main.js'
+                    inlineTagAttributes: {
+                        js: 'data-inlined="true"',
+                        css: 'data-inlined="true"'
                     },
-                    styles: {
-                        bundle: [
-                            '<%= buildPath %>/css/libs.css',
-                            '<%= buildPath %>/css/dev.css'
-                        ],
-                        test: '<%= buildPath %>/css/inline.css'
-                    },
-                    sections: {
-                        views: '<%= buildPath %>/views/**/*.html',
-                        templates: '<%= buildPath %>/templates/**/*.html',
-                        layout: {
-                            header: '<%= buildPath %>/layout/header.html',
-                            footer: '<%= buildPath %>/layout/footer.html'
-                        }
-                    },
-                    data: {
-                        // Data to pass to templates
-                        version: "0.1.0",
-                        title: "test",
-                    },
-                }
+                    uglify: true,
+                    cssmin: true,
+                },
+                src: "src/index.html",
+                dest: "src/PokeEase.html"
+            }
+        },
+
+        watch: {
+            sass: {
+                files: ["**/*.scss"],
+                tasks: ["sass"],
+                options: {
+                    spawn: false,
+                },
+            },
+            ts: {
+<<<<<<< HEAD
+                files: ['**/*.ts', '**/**/*.ts', '**/**/**/*.ts', '**/**/**/**/*.ts'],
+                tasks: ['ts'],
+                options: {
+=======
+                 files: ["**/*.ts","**/**/*.ts","**/**/**/*.ts","**/**/**/**/*.ts"],
+                    tasks: ["ts"],
+                    options: {
+>>>>>>> a3088439a473df0edc59dc6e9d33625752dc336f
+                    spawn: false,
+                },
             }
         },
         copy: {
@@ -142,16 +143,16 @@ module.exports = function (grunt) {
                     //{expand: true, cwd: 'path/', src: ['**'], dest: 'dest/'},
 
                     // flattens results to a single level
-                    //{expand: true, flatten: true, src: ['path/**'], dest: 'dest/', filter: 'isFile'},
+                    { expand: true, flatten: true, src: ['src/external/ion.rangeSlider/img/*'], dest: '<%= buildPath %>/images/', filter: 'isFile' },
                 ],
             }
         },
         concat: {
             generated: {
                 files: [{
-                        dest: '.tmp/script/app.js',
-                        src: ['src/script/*.js']
-                    },
+                    dest: '.tmp/script/app.js',
+                    src: ['src/script/*.js']
+                },
                     {
                         dest: '.tmp/script/vendor.js',
                         src: [
@@ -168,7 +169,7 @@ module.exports = function (grunt) {
                               'src/external/handlebars/handlebars.js',
                               'src/external/ion.rangeSlider/js/ion.rangeSlider.js',
                               'src/external/jquery.easing.compatibility.js',
-                            ]
+                        ]
                     },
                     {
                         dest: '.tmp/css/site.css',
@@ -176,7 +177,7 @@ module.exports = function (grunt) {
                     },
                     {
                         dest: '.tmp/css/vendor.css',
-                        src: ['src/external/**/*.css']
+                        src: ['src/external/**/*.css','src/external/*/*.css']
                     }
                 ]
             }
@@ -213,9 +214,6 @@ module.exports = function (grunt) {
                 dest: 'dist'
             }
         },
-        usemin: {
-            html: 'public/index.html',
-        },
         bower_main: {
             copy: {
                 options: {
@@ -223,12 +221,18 @@ module.exports = function (grunt) {
                 }
             }
         },
-<<<<<<< HEAD
         typings: {
             install: {
 
+<<<<<<< HEAD
             }
-        }
+        },
+        usemin: {
+            html: 'public/index.html',
+        },
+        typings: {
+            install: {}
+          }
     });
     /*grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-html-build');
@@ -238,6 +242,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-sass');
     */
     grunt.registerTask('build', [
+        'typings',
         'ts',
         'sass',
         'handlebars',
@@ -254,27 +259,12 @@ module.exports = function (grunt) {
     grunt.registerTask('default', ['bower_main', 'ts', 'sass', 'handlebars', 'watch']);
 };
 =======
-        watch: {
-            sass: {
-                files: ['**/*.scss'],
-                tasks: ['sass'],
-                options: {
-                spawn: false,
-                },
-            },
-            ts: {
-                 files: ['**/*.ts','**/**/*.ts','**/**/**/*.ts','**/**/**/**/*.ts'],
-                    tasks: ['ts'],
-                    options: {
-                    spawn: false,
-                },
-            }
-        },
-    });
-
-    grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.loadNpmTasks('grunt-ts');
-    grunt.loadNpmTasks('grunt-sass');
-    grunt.registerTask('default', ['ts', 'sass','watch']);
+    grunt.loadNpmTasks("grunt-contrib-watch");
+    grunt.loadNpmTasks("grunt-ts");
+    grunt.loadNpmTasks("grunt-sass");
+    grunt.loadNpmTasks("grunt-inline");
+    grunt.registerTask("build", ["ts", "sass"]);
+    grunt.registerTask("dist", ["build", "inline"]);
+    grunt.registerTask("default", ["build", "watch"]);
 };
->>>>>>> 1ede9e944ab7fecf5755a950ac4d60fc0e7cd743
+>>>>>>> a3088439a473df0edc59dc6e9d33625752dc336f
