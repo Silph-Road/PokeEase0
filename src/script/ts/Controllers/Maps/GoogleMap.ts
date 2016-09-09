@@ -744,26 +744,26 @@ class GoogleMap implements IMap {
             case PlayerTeam.Neutral:
                 status.text("neutral");
                 icon.attr("src", "images/gui/unoccupied-icon.png");
-                emblems.find("..iw-gym-team-emblem-unoccupied").show();
+                emblems.find(".iw-gym-team-emblem-unoccupied").show();
                 wrap.addClass("iw-gym-neutral");
                 break;
             case PlayerTeam.Instinct:
                 status.text("instinct");
                 wrap.addClass("iw-gym-instinct");
                 icon.attr("src", "images/gui/instinct-icon.png");
-                emblems.find("..iw-gym-team-emblem-instinct").show();
+                emblems.find(".iw-gym-team-emblem-instinct").show();
                 break;
             case PlayerTeam.Mystic:
                 status.text("mystic");
                 wrap.addClass("iw-gym-mystic");
                 icon.attr("src", "images/gui/mystic-icon.png");
-                emblems.find("..iw-gym-team-emblem-mystic").show();
+                emblems.find(".iw-gym-team-emblem-mystic").show();
                 break;
             case PlayerTeam.Valor:
                 status.text("valor");
                 wrap.addClass("iw-gym-valor");
                 icon.attr("src", "images/gui/valor-icon.png");
-                emblems.find("..iw-gym-team-emblem-valor").show();
+                emblems.find(".iw-gym-team-emblem-valor").show();
                 break;
         }
 

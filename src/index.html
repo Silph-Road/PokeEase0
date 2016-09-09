@@ -3,16 +3,17 @@
 <head>
     <title> PokeEase </title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
-    <link href="../node_modules/leaflet/dist/leaflet.css?__inline=true" rel="stylesheet"/>
     <!-- build:css styles/site.min.css -->
-    <link href="../node_modules/jsoneditor/dist/jsoneditor.css?__inline=true" rel="stylesheet" />
-    <link rel="stylesheet" type="text/css" href="style/animation.css?__inline=true">
+    <link rel="stylesheet" type="text/css" href="style/animation.css">
+    <link rel="stylesheet" type="text/css" href="style/style.css">
     <!-- endbuild -->
     <!-- build:css styles/vendor.min.css -->
-    <link href="external/leaflet.css" rel="stylesheet" />
-    <link rel="stylesheet" type="text/css" href="external/jquery.qtip.min.css">
-    <link href="external/ion.rangeSlider/css/ion.rangeSlider.css" rel="stylesheet" />
-    <link href="external/ion.rangeSlider/css/ion.rangeSlider.skinFlat.css" rel="stylesheet" />
+    <link href="../bower_components/leaflet/dist/leaflet.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="../bower_components/qtip2/dist/jquery.qtip.css">
+    <link href="../bower_components/ion.rangeSlider/css/ion.rangeSlider.css" rel="stylesheet" />
+    <link href="../bower_components/ion.rangeSlider/css/ion.rangeSlider.skinFlat.css" rel="stylesheet" />
+    <link href="../bower_components/jsoneditor/dist/jsoneditor.css" rel="stylesheet" />
+
     <!-- endbuild -->
     <style>
         @import url(https://fonts.googleapis.com/css?family=Lato:400,700,900,300,100);
@@ -1167,20 +1168,20 @@
 </div>
 </div>
     <!-- build:js script/vendor.js -->
-<script type="text/javascript" src="../node_modules/lodash/lodash.js?__inline=true"></script>
+    <script type="text/javascript" src="../bower_components/lodash/lodash.js"></script>
     <script type="text/javascript" src="external/localStoragePolyfill.js"></script>
-    <script type="text/javascript" src="external/jquery/dist/jquery.js"></script>
-    <script type="text/javascript" src="external/leaflet/dist/leaflet-src.js"></script>
-    <script type="text/javascript" src="external/google-map-infobubble/src/infobubble.js"></script>
-    <script type="text/javascript" src="external/jquery-animateNumber/jquery.animateNumber.js"></script>
-    <script type="text/javascript" src="external/qtip2/dist/jquery.qtip.js"></script>
-    <script type="text/javascript" src="external/moment/moment.js"></script>
-    <script type="text/javascript" src="external/jquery-circle-progress/dist/circle-progress.js"></script>
-    <script type="text/javascript" src="external/jquery.easing/js/jquery.easing.js"></script>
-    <script type="text/javascript" src="external/handlebars/handlebars.js"></script>
-    <script type="text/javascript" src="external/ion.rangeSlider/js/ion.rangeSlider.js"></script>
-    <script type="text/javascript" src="external/jquery.easing.compatibility.js"></script>
-
+    <script type="text/javascript" src="../bower_components/jquery/dist/jquery.js"></script>
+    <script type="text/javascript" src="../bower_components/leaflet/dist/leaflet-src.js"></script>
+    <script type="text/javascript" src="../bower_components/google-map-infobubble/src/infobubble.js"></script>
+    <script type="text/javascript" src="../bower_components/jquery-animateNumber/jquery.animateNumber.js"></script>
+    <script type="text/javascript" src="../bower_components/qtip2/dist/jquery.qtip.js"></script>
+    <script type="text/javascript" src="../bower_components/moment/moment.js"></script>
+    <script type="text/javascript" src="../bower_components/jquery-circle-progress/dist/circle-progress.min.js"></script>
+    <script type="text/javascript" src="../bower_components/jquery.easing/js/jquery.easing.js"></script>
+    <script type="text/javascript" src="../bower_components/handlebars/handlebars.js"></script>
+    <script type="text/javascript" src="../bower_components/ion.rangeSlider/js/ion.rangeSlider.js"></script>
+    <script type="text/javascript" src="../bower_components/jquery.easing/jsjquery.easing.compatibility.js"></script>
+    <script src="../bower_components/jsoneditor/dist/jsoneditor.js"></script>
     <!-- endbuild -->
 <script>
     var key = null;

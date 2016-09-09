@@ -9,6 +9,6 @@
     "lodash": "https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/master/lodash/lodash.d.ts",
     "moment": "https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/master/moment/moment.d.ts",
 	"es6-promise" : "https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/master/es6-promise/es6-promise.d.ts",
-	"jsoneditoronline": "registry:dt/jsoneditoronline#0.0.0+20160324185237",
+	"jsoneditoronline": "registry:dt/jsoneditoronline#0.0.0+20160324185237"
   }
 }

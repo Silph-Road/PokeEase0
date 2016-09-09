@@ -127,19 +127,20 @@ module.exports = function (grunt) {
                 {
                     dest: '.tmp/script/vendor.js',
                     src: [
-                          'src/external/jquery/dist/jquery.js',
-                          'src/external/lodash.js',
+                          'bower_components/jquery/dist/jquery.js',
+                          'bower_components/lodash/dist/lodash.js',
                           'src/external/localStoragePolyfill.js',
-                          'src/external/leaflet/dist/leaflet-src.js',
-                          'src/external/google-map-infobubble/src/infobubble.js',
-                          'src/external/jquery-animateNumber/jquery.animateNumber.js',
-                          'src/external/qtip2/dist/jquery.qtip.js',
-                          'src/external/moment/moment.js',
-                          'src/external/jquery-circle-progress/dist/circle-progress.js',
-                          'src/external/jquery.easing/js/jquery.easing.js',
-                          'src/external/handlebars/handlebars.js',
-                          'src/external/ion.rangeSlider/js/ion.rangeSlider.js',
-                          'src/external/jquery.easing.compatibility.js',
+                          'bower_components/leaflet/dist/leaflet-src.js',
+                          'bower_components/google-map-infobubble/src/infobubble.js',
+                          'bower_components/jquery-animateNumber/jquery.animateNumber.js',
+                          'bower_components/qtip2/dist/jquery.qtip.js',
+                          'bower_components/moment/moment.js',
+                          'bower_components/jquery-circle-progress/dist/circle-progress.min.js',
+                          'bower_components/jquery.easing/js/jquery.easing.js',
+                          'bower_components/handlebars/handlebars.js',
+                          'bower_components/ion.rangeSlider/js/ion.rangeSlider.js',
+                          'bower_components/jquery.easing/js/jquery.easing.compatibility.js',
+                          'bower_components/jsoneditor/dist/jsoneditor.js'
                     ]
                 },
                 {
@@ -148,7 +149,13 @@ module.exports = function (grunt) {
                 },
                 {
                     dest: '.tmp/css/vendor.css',
-                    src: ['src/external/**/*.css','src/external/*/*.css']
+                    src: [
+                            'bower_components/leaflet/dist/leaflet.css',
+                            'bower_components/qtip2/dist/jquery.qtip.css',
+                            'bower_components/ion.rangeSlider/css/ion.rangeSlider.css',
+                            'bower_components/ion.rangeSlider/css/ion.rangeSlider.skinFlat.css',
+                            'bower_components/jsoneditor/dist/jsoneditor.css'
+                    ]
                 }
                 ]
             }
@@ -207,7 +214,7 @@ module.exports = function (grunt) {
         'ts',
         'sass',
         'handlebars',
-        'bower_main',
+        //'bower_main',
         'copy:html',
         'copy:images',
         'useminPrepare',
