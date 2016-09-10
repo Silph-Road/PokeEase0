@@ -512,12 +512,11 @@
     };
      public sendMoveToRequest = (lat: number, lng: number, teleport: boolean): void => {
          const request: IMoveToLocationRequest = {
-             Command: "MoveToLocation",
+             Command: "SetMoveToTarget",
              Latitude: lat,
              Longitude: lng,
              UseTeleport: teleport
          };
-         alert('need socket handler to execute this event....., will be implement tomorow: 0')
         // _.each(this.config.eventHandlers, eh => eh.onSendHumanSnipePokemonRequest(request));
          this.sendRequest(request);
      }

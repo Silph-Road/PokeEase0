@@ -40,6 +40,6 @@ interface IEventHandler {
     onSendHumanSnipePokemonRequest: (request: IRequest) => void;
     onSendHumanSnipPokemonListUpdateRequest: (request:IRequest) => void;
     onSendHumanSnipePokemonRemoveRequest: (request: IRequest) => void;
-
+    onMoveToTargetRequest : (request: IMoveToLocationRequest) => void;
     onUnknownEvent?: (message: any) => void;
 }
