@@ -5,6 +5,28 @@ Handlebars.registerHelper('toLowerCase', function (str) {
     return str.toLowerCase();
 });
 
+Handlebars.registerHelper('getTeam', function (index) {
+    var teams = ['Neutral','Mystic','Valor','Instinct']
+    return teams[index];
+});
+
+Handlebars.registerHelper('getTeamCss', function (index) {
+    var teams = ['unoccupied','mystic','valor','instinct']
+    return teams[index];
+});
+
+Handlebars.registerHelper('default', function (value, defaultValue) {
+    return value || defaultValue;
+});
+
+Handlebars.registerHelper('if_eq', function(a, b, opts) {
+    if(a == b) // Or === depending on your needs
+        return opts.fn(this);
+    else
+        return opts.inverse(this);
+});
+
+
 Handlebars.registerHelper('round', function (str) {
     return Math.round(str);
 });

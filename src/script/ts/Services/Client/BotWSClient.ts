@@ -517,7 +517,7 @@
              Longitude: lng,
              UseTeleport: teleport
          };
-        // _.each(this.config.eventHandlers, eh => eh.onSendHumanSnipePokemonRequest(request));
+        _.each(this.config.eventHandlers, eh => eh.onMoveToTargetRequest(request));
          this.sendRequest(request);
      }
     private parseItemString = (itemStr: string): IFortItem[] => {

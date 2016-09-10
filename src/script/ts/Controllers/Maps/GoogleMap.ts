@@ -1,4 +1,6 @@
-/// <reference path="../../../../../typings/index.d.ts" />
+///<reference path="../../../../../typings/index.d.ts" />
+///<reference  path="../../../index.d.ts"/> 
+
 interface Window 
 {
     setIwStyles();
@@ -591,8 +593,10 @@ class GoogleMap implements IMap {
         this.UpdateDirectionLineToSnipe();
     }
     public onHumanSnipeReachedDestination(ev:IHumanWalkSnipeReachedEvent) : void {
-        this.snipeMarker.remove();
-        this.snipeMarker == null;
+        if(this.snipeMarker) {
+            this.snipeMarker.remove();
+            this.snipeMarker == null;
+        }
     }
     private UpdateDirectionLineToSnipe() :void {
         if(this.snipePath) {
@@ -730,75 +734,20 @@ class GoogleMap implements IMap {
         return gMarker;
     }
 
-    private getGymInfoWindowContent = (gym: IGymEvent): JQuery => {
-        const gymName = gym.Name || "Unknown";
-        const template = this.config.infoWindowTemplate.clone();
-        const wrap = template.find(".iw-wrap");
-        const status = wrap.find(".iw-status");
-        const icon = wrap.find(".iw-icon");
-        const emblems = wrap.find(".iw-gym-team-emblem");
-        emblems.hide();
-        wrap.addClass("iw-gym");
-        switch (gym.OwnedByTeam) {
-            case PlayerTeam.Neutral:
-                status.text("neutral");
-                icon.attr("src", "images/gui/unoccupied-icon.png");
-                emblems.find(".iw-gym-team-emblem-unoccupied").show();
-                wrap.addClass("iw-gym-neutral");
-                break;
-            case PlayerTeam.Instinct:
-                status.text("instinct");
-                wrap.addClass("iw-gym-instinct");
-                icon.attr("src", "images/gui/instinct-icon.png");
-                emblems.find(".iw-gym-team-emblem-instinct").show();
-                break;
-            case PlayerTeam.Mystic:
-                status.text("mystic");
-                wrap.addClass("iw-gym-mystic");
-                icon.attr("src", "images/gui/mystic-icon.png");
-                emblems.find(".iw-gym-team-emblem-mystic").show();
-                break;
-            case PlayerTeam.Valor:
-                status.text("valor");
-                wrap.addClass("iw-gym-valor");
-                icon.attr("src", "images/gui/valor-icon.png");
-                emblems.find(".iw-gym-team-emblem-valor").show();
-                break;
-        }
-
-        const roundedLat = Math.round(gym.Latitude * 10000000) / 10000000;
-        const roundedLng = Math.round(gym.Longitude * 10000000) / 10000000;
+    private createGymInfoWindow = (gym: IGymEvent, marker: google.maps.Marker): google.maps.InfoWindow => {
+        //const content = this.getGymInfoWindowContent(gym);
+        const data:IGymInfoWindow =  gym;
         const gymExp = parseInt(gym.GymPoints);
         const gymLevel = StaticData.calculateCurrentGymLevel(gymExp);
         const nextGymLevelRequired = StaticData.totalExpForGymLevel[gymLevel + 1];
+        const pokemonName = this.config.translationController.translation.pokemonNames[gym.GuardPokemonId];
+        
+        data.DefenderName = pokemonName; 
+        data.GymLevel = gymLevel
+        data.NextGymLevelRequired =  nextGymLevelRequired
 
-        wrap.find(".iw-name .iw-detail-header").text("Gym");
-        wrap.find(".iw-name .iw-detail-value").text(gymName);
+        const html = app.templates.InfoWindow.GymInfoWindow(gym);
 
-        wrap.find(".iw-gym-level").show();
-        wrap.find(".iw-gym-xp").show();
-        wrap.find(".iw-gym-hr-general").show();
-        wrap.find(".iw-gym-level .iw-detail-value").text(gymLevel);
-        wrap.find(".iw-gym-xp .iw-detail-value").text(`${gymExp} / ${nextGymLevelRequired}`);
-
-        wrap.find(".iw-latitude .iw-detail-value").text(roundedLat);
-        wrap.find(".iw-longitude .iw-detail-value").text(roundedLng);
-
-        if (gym.OwnedByTeam !== PlayerTeam.Neutral) {
-            wrap.find(".iw-gym-defender").show();
-            wrap.find(".iw-gym-defender-cp").show();
-            wrap.find(".iw-gym-hr-defender").show();
-            wrap.find(".iw-gym-defender-icon").attr("src", `images/pokemon/${gym.GuardPokemonId}.png`);
-            const pokemonName = this.config.translationController.translation.pokemonNames[gym.GuardPokemonId];
-            wrap.find(".iw-gym-defender-name").text(pokemonName);
-            wrap.find(".iw-gym-defender-cp .iw-detail-value").text(gym.GuardPokemonCp);
-        }
-        return template;
-    }
-
-    private createGymInfoWindow = (gym: IGymEvent, marker: google.maps.Marker): google.maps.InfoWindow => {
-        const content = this.getGymInfoWindowContent(gym);
-        const html = content.html();
         const infoWindow = new google.maps.InfoWindow({
             content: html
         });
