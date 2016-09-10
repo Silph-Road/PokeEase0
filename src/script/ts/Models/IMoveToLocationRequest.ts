@@ -1,5 +1,6 @@
 ﻿interface IMoveToLocationRequest extends IRequest {
     Longitude: number,
     Latitude: number,
-    UseTeleport: boolean
+    UseTeleport: boolean,
+    FortId?:string
 }

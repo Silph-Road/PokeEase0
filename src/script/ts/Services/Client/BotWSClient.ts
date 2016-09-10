@@ -1,4 +1,6 @@
-﻿class BotWSClient implements IBotClient, IRequestSender {
+﻿/// <reference path="../../../index.d.ts" />
+
+class BotWSClient implements IBotClient, IRequestSender {
     private config: IBotClientConfig;
     private webSocket: WebSocket;
     private currentlySniping: boolean;
@@ -510,12 +512,13 @@
         _.each(this.config.eventHandlers, eh => eh.onSendHumanSnipePokemonRequest(request));
             this.sendRequest(request);
     };
-     public sendMoveToRequest = (lat: number, lng: number, teleport: boolean): void => {
+     public sendMoveToRequest = (lat: number, lng: number, teleport: boolean, fortId?:string): void => {
          const request: IMoveToLocationRequest = {
              Command: "SetMoveToTarget",
              Latitude: lat,
              Longitude: lng,
-             UseTeleport: teleport
+             UseTeleport: teleport,
+             FortId: fortId
          };
         _.each(this.config.eventHandlers, eh => eh.onMoveToTargetRequest(request));
          this.sendRequest(request);

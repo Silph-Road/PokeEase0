@@ -11,6 +11,6 @@ interface IRequestSender {
     sendHumanSnipePokemonSnipeRequest(pokemonId: string);
     sendPokemonSnipeListUpdateRequest();
     sendRecycleRequest(itemId: number, count: number);
-    sendMoveToRequest(lat: number, lng: number, teleport: boolean)
+    sendMoveToRequest(lat: number, lng: number, teleport: boolean, fortId?:string)
     currentBotFamily: BotFamily;
 }

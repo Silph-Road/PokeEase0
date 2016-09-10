@@ -401,14 +401,14 @@ class GoogleMap implements IMap {
             });
             popupInfoWIndow.open(this.map, this.clickedMarker);
             $('#current-position-move').click(function () {
-                current.sendMoveToRequest(lat, lng, popupInfoWIndow)
+                current.sendMoveToRequest(lat, lng, null,popupInfoWIndow)
                 //change icon or do what ever ui change for indicated target.....
             })
             window.setIwStyles();
         });
     }
-    public sendMoveToRequest = (lat: number, lng: number, popup: google.maps.InfoWindow): void => {
-        this.config.requestSender.sendMoveToRequest(lat, lng, false);
+    public sendMoveToRequest = (lat: number, lng: number,fortId:string,popup: google.maps.InfoWindow): void => {
+        this.config.requestSender.sendMoveToRequest(lat, lng, false, fortId);
         popup.close();
     }
     public movePlayer = (position: IUpdatePositionEvent): void => {
@@ -565,8 +565,8 @@ class GoogleMap implements IMap {
 
         pStop.event.Status = setStatus;
         pStop.marker.setIcon(this.getStopIconData(setStatus));
-        const newContent = this.getStopInfoWindowContent(pStop.event);
-        const newContentHtml = newContent.html();
+        
+        const newContentHtml = app.templates.InfoWindow.PokestopInfoWindow(pStop.event)
         pStop.infoWindow.setContent(newContentHtml);
        
     }
@@ -574,7 +574,6 @@ class GoogleMap implements IMap {
     public onSnipePokemonStart(snipePokemon: IHumanWalkSnipeStartEvent) : void {
        console.log(snipePokemon);
        if(this.snipeMarker) {
-            //alert('remove');
             this.snipeMarker.remove()
         }
 
@@ -647,57 +646,23 @@ class GoogleMap implements IMap {
 
         return psMarker;
     }
-
-    private getStopInfoWindowContent = (pstop: IPokeStopEvent): JQuery => {
-        const pstopName = pstop.Name || "Unknown";
-        const template = this.config.infoWindowTemplate.clone();
-        const wrap = template.find(".iw-wrap");
-        const status = wrap.find(".iw-status");
-        const icons = wrap.find(".iw-icon");
-        icons.hide();
-        wrap.addClass("iw-pokestop");
-        switch (pstop.Status) {
-            case PokeStopStatus.Normal:
-                icons.find(".iw-icon-pokestop").show();
-                status.text("ready");
-                break;
-            case PokeStopStatus.Visited:
-                icons.find(".iw-icon-visited-pokestop").show();
-                status.text("visited");
-                wrap.addClass("iw-pokestop-visited");
-                break;
-            case PokeStopStatus.Lure:
-                icons.find(".iw-icon-lured-pokestop").show();
-                status.text("ready");
-                wrap.addClass("iw-pokestop-lure");
-                break;
-            case PokeStopStatus.VisitedLure:
-                icons.find(".iw-icon-lured-visited-pokestop").show();
-                status.text("visited");
-                wrap.addClass("iw-pokestop-visited");
-                wrap.addClass("iw-pokestop-lure");
-                break;
-        }
-        const roundedLat = Math.round(pstop.Latitude * 10000000) / 10000000;
-        const roundedLng = Math.round(pstop.Longitude * 10000000) / 10000000;
-
-        wrap.find(".iw-name .iw-detail-header").text("Pokestop");
-        wrap.find(".iw-name .iw-detail-value").text(pstopName);
-        wrap.find(".iw-latitude .iw-detail-value").text(roundedLat);
-        wrap.find(".iw-longitude .iw-detail-value").text(roundedLng);
-        return template;
-    }
-
+                                    
     private createStopInfoWindow = (pstop: IPokeStopEvent, marker: google.maps.Marker): google.maps.InfoWindow => {
-        const content = this.getStopInfoWindowContent(pstop);
-        const html = content.html();
+        const html = app.templates.InfoWindow.PokestopInfoWindow(pstop)
         const infoWindow = new google.maps.InfoWindow({
             content: html
         });
-
+        let me = this;
         marker.addListener("click", () => {
             infoWindow.open(this.map, marker);
             window.setIwStyles();
+            $(".iw-pokestop-move-to[rel='" + pstop.Id +"']").unbind("click").click(function() {
+                const fortId = $(this).attr("data-fortId");
+                const lat = parseFloat($(this).attr("data-latitude")) ;
+                const lng = parseFloat($(this).attr("data-longitude"));
+                me.sendMoveToRequest(pstop.Latitude,pstop.Latitude, pstop.Id, infoWindow);
+            }) 
+
         });
 
         return infoWindow;
@@ -751,10 +716,17 @@ class GoogleMap implements IMap {
         const infoWindow = new google.maps.InfoWindow({
             content: html
         });
-
+        let me = this;
         marker.addListener("click", () => {
             infoWindow.open(this.map, marker);
             window.setIwStyles();
+            $(".iw-gym-move-to[rel='" + gym.Id +"']").unbind("click").click(function() {
+                const fortId = $(this).attr("data-fortId");
+                const lat = parseFloat($(this).attr("data-latitude")) ;
+                const lng = parseFloat($(this).attr("data-longitude"));
+                me.sendMoveToRequest(gym.Latitude,gym.Latitude, gym.Id, infoWindow);
+            }) 
+
         });
 
         return infoWindow;

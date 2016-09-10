@@ -5,6 +5,7 @@
 ///<reference path="templates\ISnipePokemonItem.ts"/>
 ///<reference path="templates\ISnipePokemonMarkerData.ts"/>
 ///<reference path="templates\ITemplate.ts"/>
+///<reference path="templates\InfoWindow\IPokestopInfoWindow.ts"/>
 ///<reference path="templates\InfoWindow\IGymInfoWindow.ts"/>
 ///<reference path="templates\InfoWindow\ITemplateInfoWindow.ts"/>
 ///<reference path="templates\Notifications\Journals\ISnipeStartNotificationData.ts"/>

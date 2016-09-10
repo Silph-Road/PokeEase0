@@ -9,6 +9,20 @@ Handlebars.registerHelper('getTeam', function (index) {
     var teams = ['Neutral','Mystic','Valor','Instinct']
     return teams[index];
 });
+Handlebars.registerHelper('getPokestopStatus', function (index) {
+    var statuses = ['ready','visited','ready','visited']
+    return statuses[index];
+});
+Handlebars.registerHelper('getPokestopStatusCss', function (index) {
+    var classes = ['','-visited','-lure','-visited iw-pokestop-lure']
+    return classes[index];
+});
+
+Handlebars.registerHelper('getPokestopStatusIconCss', function (index) {
+    var statuses = ['ready','visited','lured','lured-visited']
+    return statuses[index];
+});
+
 
 Handlebars.registerHelper('getTeamCss', function (index) {
     var teams = ['unoccupied','mystic','valor','instinct']
