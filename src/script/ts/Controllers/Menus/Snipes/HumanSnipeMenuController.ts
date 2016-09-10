@@ -1,4 +1,6 @@
-﻿class HumanSnipeMenuController implements IHumanSnipeMenuController {
+﻿/// <reference path="../../../../index.d.ts" />
+
+class HumanSnipeMenuController implements IHumanSnipeMenuController {
     private config: IHumanSnipeMenuControllerConfig;
 
     private pokemonList: ISnipePokemonInfo[];
