@@ -558,6 +558,22 @@ class GoogleMap implements IMap {
         let setStatus = PokeStopStatus.Visited;
         const stopId = pokeStopUsed.Id;
         const pStop = this.pokestops[stopId];
+        if(!pStop) {
+            const newStop: IPokeStopEvent = {
+                Latitude : pokeStopUsed.Latitude,
+                Longitude : pokeStopUsed.Longitude,
+                Id : pokeStopUsed.Id,
+                CooldownCompleteTimestampMs : "",
+                Name: pokeStopUsed.Name,
+                LastModifiedTimestampMs:"",
+                LureInfo:null,
+                Type:FortType.PokeStop,
+                Timestamp: pokeStopUsed.Timestamp
+            }
+
+            const arr :IPokeStopEvent[] = [newStop]
+            this.setPokeStops(arr)        
+        }
         pStop.event.Name = pokeStopUsed.Name;
         if (pStop.event.Status === PokeStopStatus.Lure) {
             setStatus = PokeStopStatus.VisitedLure;

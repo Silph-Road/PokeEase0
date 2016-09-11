@@ -14,7 +14,7 @@ $(document).ready(function () {
 
     $("#menu .item").click(function() {
         $('#pokemon-info').fadeOut(200);
-        
+
         var popupTitle = $(this).attr('id');
         if (popupTitle === "settings") {
             $("#settings-buttons").show();
@@ -34,6 +34,7 @@ $(document).ready(function () {
             }
             
         });
+        $("#popup").find('#content-wrap').removeClass("blurred");
     });
 
     $("#popup .overlay, #popup .close-me").click(function() {

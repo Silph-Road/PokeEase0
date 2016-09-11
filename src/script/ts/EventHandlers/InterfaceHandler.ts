@@ -98,7 +98,11 @@ class InterfaceHandler implements IEventHandler {
         this.config.mainMenuController.setItemCount(this.currentItemCount);
         this.config.fortCacheService.setName(fortUsed.Id, fortUsed.Name);
         const pokeStop = _.find(this.pokeStops, ps => ps.Id === fortUsed.Id);
-        pokeStop.Name = fortUsed.Name;
+        
+        if(pokeStop){
+            pokeStop.Name = fortUsed.Name;
+        }
+
         this.config.map.usePokeStop(fortUsed);
         this.currentExp += fortUsed.Exp;
         _.each(this.config.notificationControllers, ctrl => ctrl.addNotificationPokeStopUsed(fortUsed));

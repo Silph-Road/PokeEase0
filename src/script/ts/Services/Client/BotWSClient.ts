@@ -336,6 +336,7 @@ class BotWSClient implements IBotClient, IRequestSender {
                          Estimated: snipeEv.Estimate,
                          Rarity : snipeEv.Rarity           
                          }
+                         console.log(snipeStartEV)
                     _.each(this.config.eventHandlers, eh => eh.onHumanSnipeStart(snipeStartEV));
                break;
 
