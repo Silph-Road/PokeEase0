@@ -1,4 +1,6 @@
-﻿class ToastNotificationController implements INotificationController {
+﻿/// <reference path="../../../../index.d.ts" />
+
+class ToastNotificationController implements INotificationController {
     public config: IToastNotificationControllerConfig;
 
     constructor(config: IToastNotificationControllerConfig) {
@@ -26,6 +28,9 @@
             return;
         }
         this.addNotification("Pokestop", fortUsed.Name);
+    }
+    public addPokemonUpgraded = (ev:IUpgradeEvent) : void => {
+        
     }
 
     public addNotificationPokemonCapture = (pokemonCatches: IPokemonCaptureEvent[], itemsUsedForCapture: number[]): void=> {

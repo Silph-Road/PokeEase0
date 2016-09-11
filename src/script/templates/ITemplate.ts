@@ -3,6 +3,7 @@
 }
 interface IJournal{
     SnipeStartNotification(data:ISnipeStartNotificationData) :string;
+    PokemonUpgraded(data: IPokemonUpgradedData) :string;
 }
 interface ITemplateNotification {
     Journals:IJournal;
@@ -16,4 +17,5 @@ interface ITemplate{
     SelectedPostionPopup(data: ISelectedPostionPopup): string;
     Notifications: ITemplateNotification;
     InfoWindow: ITemplateInfoWindow;
+    Pokemon : IPokemonTemplate
 }

@@ -310,6 +310,12 @@ class BotWSClient implements IBotClient, IRequestSender {
             playerStats.Timestamp = timestamp;
             _.each(this.config.eventHandlers, eh => eh.onPlayerStats(playerStats));
         }
+        else if(_.includes(type, ".UpgradePokemonEvent")){
+            let upgradeEV = message as IUpgradeEvent
+             _.each(this.config.eventHandlers, eh => eh.onPokemonUpgraded(upgradeEV));
+             _.each(this.config.eventHandlers, eh => eh.onPokemonUpgraded(upgradeEV));
+
+        }
         else if (_.includes(type, ".HumanWalkSnipeEvent")) {
             let snipeEv = message as IHumanWalkSnipeEvent;
 
@@ -449,6 +455,17 @@ class BotWSClient implements IBotClient, IRequestSender {
         this.sendRequest(request);
     };
     
+    public sendUpgradePokemonRequest = (pokemonId: string, max:boolean): void => {
+        const request: IUpgradeRequest = {
+             Command: "UpgradePokemon",
+             Data: pokemonId,
+             PokemonId: pokemonId,
+             Max:max
+        };
+        _.each(this.config.eventHandlers, eh => eh.onSendUpgradePokemonRequest(request));
+        this.sendRequest(request);
+    };
+
     public sendRequest = (request: IRequest): void => {
         console.log("%c>>> OUTGOING:", "color: red", request);
         const requestStr = JSON.stringify(request);

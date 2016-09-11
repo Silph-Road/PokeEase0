@@ -1,4 +1,6 @@
-﻿class InterfaceHandler implements IEventHandler {
+﻿/// <reference path="../../index.d.ts" />
+
+class InterfaceHandler implements IEventHandler {
     private config: IInterfaceHandlerConfig;
     private currentlySniping: boolean;
     private pokeStops: IPokeStopEvent[];
@@ -24,7 +26,14 @@
         this.currentItemCount = 0;
         this.latestPlayerStats = null;
     }
+    public onPokemonUpgraded(pkm: IUpgradeEvent) :void {
+        this.config.pokemonMenuController.updatePokemonAfterUpgraded(pkm);
+        _.each(this.config.notificationControllers, ctrl => ctrl.addPokemonUpgraded(pkm));
+            
+    }
+    public onSendUpgradePokemonRequest (request: IRequest): void  {
 
+    }
     public onLog(logEvent: ILogEvent): void {
         this.config.consoleController.log(logEvent);
     }

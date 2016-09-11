@@ -28,7 +28,8 @@ interface IEventHandler {
     onHumanSnipeList: (pokemonList: IHumanWalkSnipeListEvent) => void;
     onHumanSnipeStart : (snipeData: IHumanWalkSnipeStartEvent) => void;
     onHumanSnipeReachedDestination :(ev: IHumanWalkSnipeReachedEvent) => void;
-
+    onPokemonUpgraded : (ev:IUpgradeEvent) => void;
+    onSendUpgradePokemonRequest: (request: IRequest) => void;
     onSendGetConfigRequest: (request: IRequest) => void;
     onSendPokemonListRequest: (request: IRequest) => void;
     onSendEggsListRequest: (request: IRequest) => void;

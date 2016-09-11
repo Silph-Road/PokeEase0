@@ -10,4 +10,5 @@
     addNotificationIncubatorStatus(incubatorStatus: IIncubatorStatusEvent): void;
     addHumanWalkSnipeStart(startEvent: IHumanWalkSnipeStartEvent): void;
     addHumanSnipeReachedDestination(ev: IHumanWalkSnipeReachedEvent) : void;
+    addPokemonUpgraded(ev: IUpgradeEvent) : void;
 }

@@ -1,4 +1,6 @@
-﻿class DesktopNotificationController implements INotificationController {
+﻿/// <reference path="../../../../index.d.ts" />
+
+class DesktopNotificationController implements INotificationController {
     public config: IDesktopNotificationControllerConfig;
 
     constructor(config: IDesktopNotificationControllerConfig) {
@@ -36,6 +38,10 @@
 
     private updateCurrentPermission = (status: string) => {
         this.config.permissionElement.text(status);
+    }
+
+    public addPokemonUpgraded = (ev:IUpgradeEvent) : void => {
+        
     }
 
     public addNotificationExample = (): void => {

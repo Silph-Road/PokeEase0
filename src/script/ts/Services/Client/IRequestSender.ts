@@ -6,6 +6,7 @@ interface IRequestSender {
     sendPlayerStatsRequest();
     sendGetPokemonSettingsRequest();
     sendTransferPokemonRequest(pokemonId: string);
+    sendUpgradePokemonRequest(pokemonId: string, max:boolean);
     sendEvolvePokemonRequest(pokemonId: string);
     sendHumanSnipePokemonRemoveRequest(pokemonId: string);
     sendHumanSnipePokemonSnipeRequest(pokemonId: string);

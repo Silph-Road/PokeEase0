@@ -41,8 +41,10 @@ Handlebars.registerHelper('if_eq', function(a, b, opts) {
 });
 
 
-Handlebars.registerHelper('round', function (str) {
-    return Math.round(str);
+Handlebars.registerHelper('round', function (str, decimalPlaces) {
+    decimalPlaces = decimalPlaces || 2;
+    var power = Math.pow(10, decimalPlaces);
+    return Math.floor(str * power)/power;
 });
 Handlebars.registerHelper('toTime', function (totalSec) {
     return Math.round((totalSec / 60)) + " min " + totalSec % 60 + " sec";

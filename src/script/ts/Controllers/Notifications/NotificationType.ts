@@ -7,5 +7,6 @@ enum NotificationType {
     IncubatorStatus = 5,
     ItemRecycle = 6,
     PokemonTransfer = 7 ,
-    HumanWalkSnipe = 8
+    HumanWalkSnipe = 8,
+    PokemonUpgraded
 }

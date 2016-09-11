@@ -1,3 +1,4 @@
+/// <reference path="../../../../index.d.ts" />
 class JournalNotificationController implements INotificationController {
     public config: IJournalNotificationControllerConfig;
     private notifications: INotification[];
@@ -30,7 +31,14 @@ class JournalNotificationController implements INotificationController {
     private exampleClicked = (ev: JQueryEventObject): void => {
         this.addNotificationExample();
     }
+    public addPokemonUpgraded = (ev:IUpgradeEvent) : void => {
+        const data : IPokemonUpgradedData = ev;
+        data.PokemonName = this.config.translationController.translation.pokemonNames[ev.PokemonId];
+        this.addNotification(data, 
+            app.templates.Notifications.Journals.PokemonUpgraded(data),
+            "Upgrade");
 
+    }
     private onUpdateTimerElapsed = () => {
         const currentTime = Date.now();
         _.each(this.notifications, notification => {

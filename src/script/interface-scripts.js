@@ -13,12 +13,16 @@ $(document).ready(function () {
     });
 
     $("#menu .item").click(function() {
+        $('#pokemon-info').fadeOut(200);
+        
         var popupTitle = $(this).attr('id');
         if (popupTitle === "settings") {
             $("#settings-buttons").show();
         } else {
             $("#settings-buttons").hide();
         }
+        $('pokemon-info').hide();
+        
         $("#popup").stop().fadeIn(300);
         $("#popup .title span").text($(this).attr('title') || $(this).attr('id'));
         $("#popup .title").css('background-color', $(this).css('background-color'));
