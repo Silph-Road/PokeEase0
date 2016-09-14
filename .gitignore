@@ -11,6 +11,7 @@
 *.userprefs
 
 public/
+src/external/**
 src/script/script.js
 src/script/script.js.map
 src/script/template.js
